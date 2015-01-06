@@ -6,6 +6,7 @@ import org.usfirst.frc.team4737.robot.control.TeleopController;
 import org.usfirst.frc.team4737.robot.control.TestController;
 import org.usfirst.frc.team4737.robot.data.DataRecorder;
 import org.usfirst.frc.team4737.robot.data.Map;
+import org.usfirst.frc.team4737.robot.data.Map2;
 import org.usfirst.frc.team4737.robot.math.Vector3d;
 import org.usfirst.frc.team4737.robot.subAssemblies.MotorGroup;
 import org.usfirst.frc.team4737.robot.wrappers.Motor;
@@ -35,7 +36,7 @@ public class Robot extends IterativeRobot {
 
 	// Controller Assistants
 
-	public Map map;
+	public Map2 map;
 
 	// Sensors and Actuators
 
@@ -98,7 +99,7 @@ public class Robot extends IterativeRobot {
 		autonomous = new AutonomousController();
 		test = new TestController();
 
-		map = new Map(Global.MAP_POINT_RADIUS);
+		map = new Map2(500 * 1000);
 
 		driveMotorFrontLeft = new Motor(Global.DRIVEMOTOR_FL, false);
 		driveMotorRearLeft = new Motor(Global.DRIVEMOTOR_RL, false);

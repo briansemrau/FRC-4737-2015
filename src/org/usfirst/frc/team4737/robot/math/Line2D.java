@@ -20,6 +20,11 @@ public class Line2D {
 		this.a = a;
 		this.b = b;
 	}
+	
+	public Line2D(double x1, double y1, double x2, double y2) {
+		a = new Vector2d(x1, y1);
+		b = new Vector2d(x2, y2);
+	}
 
 	/**
 	 * @return Returns the X value of the lowest value endpoint.
