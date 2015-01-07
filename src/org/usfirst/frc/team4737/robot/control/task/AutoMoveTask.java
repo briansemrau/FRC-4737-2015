@@ -7,6 +7,7 @@ import org.usfirst.frc.team4737.robot.math.Vector2d;
 public class AutoMoveTask extends AbstractRobotTask {
 
 	private boolean global;
+	private boolean usePid;
 	private Vector2d locationOrig;
 	private Vector2d goal;
 	
@@ -20,9 +21,10 @@ public class AutoMoveTask extends AbstractRobotTask {
 	 *            init location/angle) or relative (relative to robot's
 	 *            location/angle in task initialization).
 	 */
-	public AutoMoveTask(Vector2d goal, boolean globalCoords) {
+	public AutoMoveTask(Vector2d goal, boolean globalCoords, boolean useDistancePid) {
 		super("automove", 30);
 		this.global = globalCoords;
+		this.usePid = useDistancePid;
 	}
 
 	public void init(Robot robot) {
@@ -45,7 +47,7 @@ public class AutoMoveTask extends AbstractRobotTask {
 		
 		// Using arcade drive code
 		double xAxis = angleError * Global.AUTOMOVE_ANGULAR_kP; // Rotational axis
-		double yAxis = distanceError * Global.AUTOMOVE_kP; // Magnitude axis
+		double yAxis = usePid ? Math.min(distanceError * Global.AUTOMOVE_kP, Global.AUTOMOVE_MAXSPEED) : Global.AUTOMOVE_MAXSPEED; // Magnitude axis
 		double zAxis = 1; // Scale axis
 
 		double leftSpeedMod = Math.min(Math.abs(-1 / Global.ARCADE_YAW_SENSITIVITY - xAxis) / (1 / Global.ARCADE_YAW_SENSITIVITY), 1);

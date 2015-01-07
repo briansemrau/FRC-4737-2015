@@ -5,7 +5,6 @@ import org.usfirst.frc.team4737.robot.control.AutonomousController;
 import org.usfirst.frc.team4737.robot.control.TeleopController;
 import org.usfirst.frc.team4737.robot.control.TestController;
 import org.usfirst.frc.team4737.robot.data.DataRecorder;
-import org.usfirst.frc.team4737.robot.data.Map;
 import org.usfirst.frc.team4737.robot.data.Map2;
 import org.usfirst.frc.team4737.robot.math.Vector3d;
 import org.usfirst.frc.team4737.robot.subAssemblies.MotorGroup;

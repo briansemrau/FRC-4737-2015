@@ -28,6 +28,7 @@ public class Global {
 
 	public static final double AUTOMOVE_kP = 0.1; // TODO tune
 	public static final double AUTOMOVE_ANGULAR_kP = 0.01; // TODO tune
+	public static final double AUTOMOVE_MAXSPEED = 1.0; // TODO tune
 
 	// Sensor/Actuator pins
 
