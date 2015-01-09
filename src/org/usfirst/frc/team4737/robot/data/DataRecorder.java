@@ -38,7 +38,7 @@ public class DataRecorder {
 	 */
 	private static String date;
 	static {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy'_'MM'_'dd'_'HH'_'mm'_'ss");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 		date = format.format(new Date());
 	}
 
@@ -60,7 +60,7 @@ public class DataRecorder {
 	 * (<code>/home/lvuser/datalog#.txt</code>) or to a flash drive if available.
 	 */
 	public static void saveDataLog() {
-		System.out.println("Outputting session data...");
+		System.out.println("Saving session data...");
 		
 		String outputFile = new String();
 		File f = new File("/Volumes/NO NAME");

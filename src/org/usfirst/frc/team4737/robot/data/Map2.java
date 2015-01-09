@@ -13,10 +13,18 @@ public class Map2 {
 
 	private byte[] map;
 	private int size;
+	public int minX;
+	public int maxX;
+	public int minY;
+	public int maxY;
 
 	public Map2(int maxMapSize) {
 		map = new byte[maxMapSize * maxMapSize];
 		this.size = maxMapSize;
+		minX = this.size / 2;
+		maxX = this.size / 2;
+		minY = this.size / 2;
+		maxY = this.size / 2;
 	}
 
 	/**
@@ -29,7 +37,17 @@ public class Map2 {
 	public void mapPoint(int x, int y, byte type) {
 		int mx = x + size / 2;
 		int my = y + size / 2;
-		map[mx + my * size] = type;
+		if (mx >= 0 && mx < size && my >= 0 && my < size) {
+			map[mx + my * size] = type;
+			if (mx < minX)
+				minX = mx;
+			if (mx > maxX)
+				maxX = mx;
+			if (my < minY)
+				minY = my;
+			if (my > maxY)
+				maxY = my;
+		}
 	}
 
 	/**

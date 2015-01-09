@@ -22,7 +22,7 @@ public class AutoMoveTask extends AbstractRobotTask {
 	 *            location/angle in task initialization).
 	 */
 	public AutoMoveTask(Vector2d goal, boolean globalCoords, boolean useDistancePid) {
-		super("automove", 30);
+		super("autonMoveTask", 30);
 		this.global = globalCoords;
 		this.usePid = useDistancePid;
 	}

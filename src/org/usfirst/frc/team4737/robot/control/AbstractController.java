@@ -22,7 +22,7 @@ public abstract class AbstractController {
 	 */
 	private ArrayList<AbstractRobotTask> toAdd;
 
-	public AbstractController() {
+	public AbstractController(Robot robot) {
 		tasks = new ArrayList<AbstractRobotTask>();
 		toAdd = new ArrayList<AbstractRobotTask>();
 	}

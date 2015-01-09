@@ -19,11 +19,12 @@ public class Global {
 													// the robot's maximum
 													// velocity begins to
 													// decrease
-
+	public static final double DECELERATION_MOD = 0.1; // TODO calculate
+	
+	public static final double LOG_AUTOSAVE_PERIOD = 15;
+	
 	// Control tuning
 
-	public static final double MAP_POINT_RADIUS = 0.05; // TODO test ultrasonic
-														// error range
 	public static final double ARCADE_YAW_SENSITIVITY = 1; // TODO tune
 
 	public static final double AUTOMOVE_kP = 0.1; // TODO tune
@@ -33,7 +34,7 @@ public class Global {
 	// Sensor/Actuator pins
 
 	public static final int JOYSTICK_1_USB = 1; // TODO pick right ports
-	public static final int JOYSTICK_2_USB = 2; // --
+	public static final int JOYSTICK_2_USB = 2; // ^
 
 	public static final int DRIVEMOTOR_FL = -1; // TODO pick pins
 	public static final int DRIVEMOTOR_FR = -1; // TODO pick pins

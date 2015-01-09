@@ -68,6 +68,8 @@ public class Robot extends IterativeRobot {
 	 */
 	private double deltaTime;
 
+	private double sinceLastLogSave;
+
 	/**
 	 * The measured acceleration of the robot.
 	 */
@@ -94,9 +96,11 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
+		Log.println("Initializing Robot");
+
 		teleop = new TeleopController(this);
-		autonomous = new AutonomousController();
-		test = new TestController();
+		autonomous = new AutonomousController(this);
+		test = new TestController(this);
 
 		map = new Map2(500 * 1000);
 
@@ -105,11 +109,13 @@ public class Robot extends IterativeRobot {
 		driveMotorFrontRight = new Motor(Global.DRIVEMOTOR_FR, false);
 		driveMotorRearRight = new Motor(Global.DRIVEMOTOR_RR, false);
 
-		leftDriveMotors = new MotorGroup(driveMotorFrontLeft, driveMotorRearLeft);
-		rightDriveMotors = new MotorGroup(driveMotorFrontRight, driveMotorRearRight);
+		leftDriveMotors = new MotorGroup(driveMotorFrontLeft,
+				driveMotorRearLeft);
+		rightDriveMotors = new MotorGroup(driveMotorFrontRight,
+				driveMotorRearRight);
 
 		gyroscope = new Gyro(Global.GYROSCOPE);
-		gyroscope.initGyro();
+		gyroscope.initGyro(); // TODO: add some button to do this maybe
 		accelerometer = new BuiltInAccelerometer();
 		usd = new Ultrasonic(Global.USD_DIGITAL_IN, Global.USD_DIGITAL_OUT);
 
@@ -158,7 +164,6 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		commonPeriodic();
 		test.periodicUpdate(this);
-
 	}
 
 	public void commonPeriodic() {
@@ -166,6 +171,13 @@ public class Robot extends IterativeRobot {
 		timeLast = timeCurrent;
 		timeCurrent = System.nanoTime() / 1000000000.0;
 		deltaTime = timeCurrent - timeLast;
+		
+		// Handle log
+		sinceLastLogSave += deltaTime;
+		if (sinceLastLogSave >= Global.LOG_AUTOSAVE_PERIOD) {
+			sinceLastLogSave = 0;
+			Log.saveLog();
+		}
 
 		// Measure acceleration. The accelerometer returns values in Gs
 		localAcceleration.x = accelerometer.getX() / Global.GRAVITY;
@@ -196,7 +208,8 @@ public class Robot extends IterativeRobot {
 		// Include ALL measurable values in here
 
 		DataRecorder.record("time (s)", startTime);
-		DataRecorder.record("voltage", DriverStation.getInstance().getBatteryVoltage());
+		DataRecorder.record("voltage", DriverStation.getInstance()
+				.getBatteryVoltage());
 		DataRecorder.record("gyroRX", gyroAngle.x);
 		DataRecorder.record("gyroRY", gyroAngle.y);
 		DataRecorder.record("gyroRZ", gyroAngle.z);
