@@ -12,6 +12,7 @@ public class Motor {
 
 	private Talon talon;
 	private boolean inverted;
+	private double setValue;
 	
 	public Motor(int pin, boolean inverted) {
 		talon = new Talon(pin);
@@ -20,6 +21,11 @@ public class Motor {
 	
 	public void set(double power) {
 		talon.set(inverted ? -power : power);
+		setValue = power;
+	}
+	
+	public double getSetValue() {
+		return setValue;
 	}
 	
 }

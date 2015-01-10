@@ -23,10 +23,12 @@ public class ExploreTask extends AbstractRobotTask {
 	}
 
 	public void periodicExecution(Robot robot) {
+		if (true)
+			return;
 		if (current.isFinished()) {
 			if (state == State.MAPPING) {
 				state = State.TRAVELING;
-				Vector2d[] path = createPath(robot.map, robot);
+				Vector2d[] path = null;// createPath(robot.map, robot);
 				if (path == null) {
 					finish();
 					return;

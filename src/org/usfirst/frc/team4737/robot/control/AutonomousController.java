@@ -12,6 +12,8 @@ public class AutonomousController extends AbstractController {
 	public void periodicUpdate(Robot robot) {
 		super.periodicUpdate(robot);
 		
+		// Time to score all the points
+		
 	}
 
 }

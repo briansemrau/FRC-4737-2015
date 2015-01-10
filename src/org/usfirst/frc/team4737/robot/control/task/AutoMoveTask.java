@@ -28,16 +28,16 @@ public class AutoMoveTask extends AbstractRobotTask {
 	}
 
 	public void init(Robot robot) {
-		locationOrig = new Vector2d(robot.position.x, robot.position.y);
+		locationOrig = new Vector2d(robot.position.position.x, robot.position.position.y);
 		if (global) {
 		} else {
-			goal = goal.plus(new Vector2d(robot.gyroAngle.z + Math.toDegrees(Math.atan2(goal.y, goal.x)), Math.hypot(goal.x, goal.y), locationOrig));
+			goal = goal.plus(new Vector2d(robot.position.gyroAngle.z + Math.toDegrees(Math.atan2(goal.y, goal.x)), Math.hypot(goal.x, goal.y), locationOrig));
 		}
 	}
 
 	public void periodicExecution(Robot robot) {
-		double angleCurrent = robot.gyroAngle.z;
-		Vector2d locationCurrent = new Vector2d(robot.position.x, robot.position.y);
+		double angleCurrent = robot.position.gyroAngle.z;
+		Vector2d locationCurrent = new Vector2d(robot.position.position.x, robot.position.position.y);
 		
 		double angleGoal = Math.toDegrees(Math.atan2(goal.y - locationCurrent.y, goal.x - locationCurrent.y));
 		double distanceGoal = 0.1;
