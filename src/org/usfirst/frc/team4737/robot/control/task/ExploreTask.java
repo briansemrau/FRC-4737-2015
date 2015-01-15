@@ -65,9 +65,4 @@ public class ExploreTask extends AbstractRobotTask {
 	 * return found; }
 	 */
 
-	private Vector2d[] createPath(Map2 map, Robot robot) {
-		// TODO
-		return null;
-	}
-
 }

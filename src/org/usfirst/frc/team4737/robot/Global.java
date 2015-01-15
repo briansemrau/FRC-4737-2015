@@ -35,7 +35,7 @@ public class Global {
 	public static final double LIFT_MAX_HEIGHT = 1.8; // TODO tune
 	public static final double LIFT_MAX_DIFFERENCE = 0.005; // TODO tune
 	public static final double LIFT_kP = 0.1; // TODO tune
-	public static final double LIFT_kI = 0.1; // TODO tune
+	public static final double LIFT_kI = 0.01; // TODO tune
 
 	// Sensor/Actuator pins
 	
@@ -50,6 +50,7 @@ public class Global {
 	public static final int DRIVEMOTOR_RR = -1;
 
 	public static final int GYROSCOPE = -1;
+	
 	public static final int USD_DIGITAL_IN = -1;
 	public static final int USD_DIGITAL_OUT = -1;
 	
@@ -62,6 +63,5 @@ public class Global {
 	public static final int LIFT_ENCODER_RIGHTA = -1;
 	public static final int LIFT_ENCODER_RIGHTB = -1;
 	public static final int LIFT_ENCODER_DPP = -1;
-	
 
 }
