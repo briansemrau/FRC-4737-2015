@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4737.robot.vision;
 
+import org.usfirst.frc.team4737.robot.vision.components.Rect4i;
+
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.DrawMode;
 import com.ni.vision.NIVision.MeasurementType;
@@ -17,12 +19,16 @@ public class Vision {
 
 	private ColorImage image;
 
-	ParticleFilterCriteria2[] pfc; // the criteria for doing the particle filter operation
+	ParticleFilterCriteria2[] pfcRect; // Criteria for rectangles
+	ParticleFilterCriteria2[] pfcBin; // Criteria for rectangles
 
 	public Vision() {
-		pfc = new ParticleFilterCriteria2[] {
-				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_WIDTH, 30, 400, 0, 0),
-				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_HEIGHT, 40, 400, 0, 0), };
+		pfcRect = new ParticleFilterCriteria2[] {
+				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_WIDTH, 30, 400, 0, 0), // TODO tune
+				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_HEIGHT, 30, 400, 0, 0), };
+		pfcBin = new ParticleFilterCriteria2[] {
+				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_WIDTH, 30, 400, 0, 0), // TODO tune
+				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_HEIGHT, 30, 400, 0, 0), }; 
 	}
 	
 	public void testRects(ColorImage image) {
@@ -38,7 +44,7 @@ public class Vision {
 		}
 	}
 
-	public void findTotes(AxisCamera camera) {
+	/*public void findTotes(AxisCamera camera) {
 		try {
 			camera.getImage(image);
 
@@ -60,10 +66,10 @@ public class Vision {
 		} catch (NIVisionException ex) {
 			ex.printStackTrace();
 		}
-	}
+	}*/
 
 	private Rect4i[] getRects(ColorImage image, ColorThreshold thresh) throws NIVisionException {
-		ParticleAnalysisReport[] reports = getParticles(image, thresh);
+		ParticleAnalysisReport[] reports = getParticles(image, thresh, pfcRect);
 
 		Rect4i[] rects = new Rect4i[reports.length];
 
@@ -75,12 +81,12 @@ public class Vision {
 		return rects;
 	}
 
-	private ParticleAnalysisReport[] getParticles(ColorImage image, ColorThreshold thresh) throws NIVisionException {
+	private ParticleAnalysisReport[] getParticles(ColorImage image, ColorThreshold thresh, ParticleFilterCriteria2[] criteria) throws NIVisionException {
 		BinaryImage thresholdImage = image.thresholdRGB(thresh.redLow, thresh.redHigh, thresh.greenLow,
 				thresh.greenHigh, thresh.blueLow, thresh.blueHigh); // keep only white objects
 		BinaryImage bigObjectsImage = thresholdImage.removeSmallObjects(false, 2); // remove small artifacts
 		BinaryImage convexHullImage = bigObjectsImage.convexHull(false); // fill in occluded rectangles
-		BinaryImage filteredImage = convexHullImage.particleFilter(pfc); // find filled in rectangles
+		BinaryImage filteredImage = convexHullImage.particleFilter(criteria); // find filled in rectangles
 
 		ParticleAnalysisReport[] reports = filteredImage.getOrderedParticleAnalysisReports(); // get list of results
 

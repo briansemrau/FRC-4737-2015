@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4737.robot.vision;
+package org.usfirst.frc.team4737.robot.vision.components;
 
 import java.awt.Rectangle;
 
@@ -10,6 +10,12 @@ public class Rect4i {
 	public int h;
 
 	public Rect4i(int x, int y, int width, int height) {
+		if (width < 0) {
+			x -= width; width = -width;
+		}
+		if (height < 0) {
+			y -= height; height = -height;
+		}
 		this.x = x;
 		this.y = y;
 		this.w = width;

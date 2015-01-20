@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4737.robot.vision;
+package org.usfirst.frc.team4737.robot.vision.components;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class L {
 					if (a.intersects(b)) {
 						int y1 = a.y + a.h;
 						int y2 = b.y + b.h;
-						boolean change = y1 < y2;
+						boolean change = y1 > y2;
 						ls.add(new L(change ? b : a, change ? a : b, change ? (b.x < a.x) : (a.x < b.x)));
 					}
 				}
@@ -46,17 +46,19 @@ public class L {
 	}
 
 	/**
-	 * In image coordinates
+	 * In image coordinates.<br>
+	 * <br>
+	 * This method might not be reliable.
 	 */
 	public Vector2d getInsideCorner() {
-		return new Vector2d(side ? (vert.x) : (vert.x + vert.w), horiz.y + horiz.h);
+		return new Vector2d(side ? (vert.x) : (vert.x + vert.w), horiz.y);
 	}
 
 	/**
 	 * In image coordinates
 	 */
 	public Vector2d getObtuseCorner() {
-		return new Vector2d(side ? (vert.x + vert.w) : (vert.x), horiz.y);
+		return new Vector2d(side ? (vert.x + vert.w) : (vert.x), horiz.y + horiz.h);
 	}
 
 	public boolean leftSide() {
@@ -70,6 +72,10 @@ public class L {
 	public Rect4i getBounds() {
 		return new Rect4i(Math.min(horiz.x, vert.x), Math.min(horiz.y, vert.y), Math.max(horiz.w, vert.w), Math.max(
 				horiz.h, vert.h));
+	}
+	
+	public Rect4i vertical() {
+		return vert;
 	}
 
 }
