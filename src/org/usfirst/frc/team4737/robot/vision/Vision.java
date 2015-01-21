@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4737.robot.vision;
 
+import org.usfirst.frc.team4737.robot.Robot;
+import org.usfirst.frc.team4737.robot.vision.components.GamePiece;
 import org.usfirst.frc.team4737.robot.vision.components.Rect4i;
 
 import com.ni.vision.NIVision;
@@ -13,10 +15,11 @@ import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
-import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 public class Vision {
 
+	public GamePiece[] currentPieces;
+	
 	private ColorImage image;
 
 	ParticleFilterCriteria2[] pfcRect; // Criteria for rectangles
@@ -29,6 +32,18 @@ public class Vision {
 		pfcBin = new ParticleFilterCriteria2[] {
 				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_WIDTH, 30, 400, 0, 0), // TODO tune
 				new ParticleFilterCriteria2(MeasurementType.MT_BOUNDING_RECT_HEIGHT, 30, 400, 0, 0), }; 
+	}
+	
+	public void update(Robot robot) {
+		ColorImage prev = image;
+		robot.camera.getImage(image);
+		if (image.equals(prev)) {
+			// camera hasn't updated
+		} else {
+			// Update found game pieces
+			
+			
+		}
 	}
 	
 	public void testRects(ColorImage image) {

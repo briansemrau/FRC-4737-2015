@@ -8,6 +8,7 @@ import org.usfirst.frc.team4737.robot.data.DataRecorder;
 import org.usfirst.frc.team4737.robot.math.Positioner;
 import org.usfirst.frc.team4737.robot.subAssemblies.Lift;
 import org.usfirst.frc.team4737.robot.subAssemblies.MotorGroup;
+import org.usfirst.frc.team4737.robot.vision.Vision;
 import org.usfirst.frc.team4737.robot.wrappers.Motor;
 
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
@@ -37,8 +38,8 @@ public class Robot extends IterativeRobot {
 
 	// Controller Assistants
 
-//	public Map2 map;
-
+	public Vision vision; 
+	
 	// Sensors and Actuators
 
 	public AxisCamera camera;
@@ -90,9 +91,8 @@ public class Robot extends IterativeRobot {
 		autonomous = new AutonomousController(this);
 		test = new TestController(this);
 		
-//		map = new Map2(500 * 1000);
-		
 		camera = new AxisCamera(Global.CAMERA_IP);
+		vision = new Vision();
 
 		driveMotorFrontLeft = new Motor(Global.DRIVEMOTOR_FL, false);
 		driveMotorRearLeft = new Motor(Global.DRIVEMOTOR_RL, false);

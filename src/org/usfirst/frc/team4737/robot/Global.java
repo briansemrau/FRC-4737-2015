@@ -8,6 +8,8 @@ package org.usfirst.frc.team4737.robot;
  *
  */
 public class Global {
+	
+	public static final String VERSION = "0.1";
 
 	// Fundamental constants
 
@@ -39,7 +41,7 @@ public class Global {
 
 	// Sensor/Actuator pins
 	
-	public static final String CAMERA_IP = "1.1.1.1"; // TODO
+	public static final String CAMERA_IP = "10.47.37.11";
 
 	public static final int JOYSTICK_1_USB = 1;
 	public static final int JOYSTICK_2_USB = 2;

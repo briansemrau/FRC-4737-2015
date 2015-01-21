@@ -31,7 +31,7 @@ public class Log {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		date = format.format(new Date());
 	}
-	private static ArrayList<String> log;
+	private static ArrayList<String> log = new ArrayList<String>();
 
 	public static void print(Object o) {
 		System.out.print("Log: " + o);

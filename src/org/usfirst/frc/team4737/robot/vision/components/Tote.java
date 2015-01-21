@@ -4,8 +4,8 @@ public class Tote extends GamePiece {
 
 	public Tote[] createTotes(LGroup[] groups) {
 		for (LGroup group : groups) {
-		double scale = group.getBounds().; 
-		}
+//		double scale = group.getBounds().; 
+		}return null;
 	}
 	
 	public boolean yellow;
