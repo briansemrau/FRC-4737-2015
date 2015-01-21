@@ -1,6 +1,6 @@
-package org.usfirst.frc.team4737.robot.control;
+package org.usfirst.frc.team4737.test.control;
 
-import org.usfirst.frc.team4737.robot.Robot;
+import org.usfirst.frc.team4737.test.Robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.image.NIVisionException;

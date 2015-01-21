@@ -47,6 +47,10 @@ public class Vector3d {
 		z -= b.z;
 	}
 
+	public Vector3d average(Vector3d b) {
+		return new Vector3d((x + b.x) / 2.0, (y + b.y) / 2.0, (z + b.z) / 2.0);
+	}
+
 	/**
 	 * Rotates the vector about the X axis. Generally not to be used when
 	 * rotating any other axes simultaneously.
@@ -108,8 +112,10 @@ public class Vector3d {
 		double cz = Math.cos(rz);
 
 		double newX = cy * (sz * y + cz * x) - sy * z;
-		double newY = sx * (cy * z + sy * (sz * y + cz * x)) + cx * (cz * y - sz * x);
-		double newZ = cx * (cy * z + sy * (sz * y + cz * x)) - sx * (cz * y - sz * x);
+		double newY = sx * (cy * z + sy * (sz * y + cz * x)) + cx
+				* (cz * y - sz * x);
+		double newZ = cx * (cy * z + sy * (sz * y + cz * x)) - sx
+				* (cz * y - sz * x);
 
 		x = newX;
 		y = newY;

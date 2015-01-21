@@ -12,6 +12,7 @@ public class TeleopController extends AbstractController {
 	private Joystick secondaryJoystick;
 	
 	public TeleopController(Robot robot) {
+		super(robot);
 		primaryJoystick = new Joystick(Global.JOYSTICK_1_USB);
 		secondaryJoystick = new Joystick(Global.JOYSTICK_2_USB);
 		
