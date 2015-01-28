@@ -1,13 +1,11 @@
-package org.usfirst.frc.team4737.test;
+package org.usfirst.frc.team4737.robot.test;
 
 import org.usfirst.frc.team4737.robot.Global;
-import org.usfirst.frc.team4737.robot.Log;
-import org.usfirst.frc.team4737.robot.data.DataRecorder;
+import org.usfirst.frc.team4737.robot.vision.Vision;
 import org.usfirst.frc.team4737.test.control.AbstractController;
 import org.usfirst.frc.team4737.test.control.TestController;
 
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
@@ -27,12 +25,14 @@ public class Robot extends IterativeRobot {
 	public AbstractController current;
 
 	// Controller Assistants
+	
+	public Vision vision;
 
 	// Sensors and Actuators
 
 	public AxisCamera camera;
 
-	public BuiltInAccelerometer accelerometer;
+//	public BuiltInAccelerometer accelerometer;
 
 	// Values
 
@@ -49,26 +49,25 @@ public class Robot extends IterativeRobot {
 	 */
 	public double deltaTime;
 	
-	private double sinceLastLogSave;
-
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		Log.println("Initializing Robot...");
+		System.out.println("Initializing Robot...");
 		
-		Log.println("Initializing controllers...");
+		System.out.println("Initializing controllers...");
 		test = new TestController(this);
 		
 		camera = new AxisCamera(Global.CAMERA_IP);
+		vision = new Vision();
 
-		accelerometer = new BuiltInAccelerometer();
+//		accelerometer = new BuiltInAccelerometer();
 
 		timeLast = System.nanoTime() / 1000000000.0;
 		timeCurrent = System.nanoTime() / 1000000000.0;
 
-		Log.println("Initialized robot.");
+		System.out.println("Initialized robot.");
 	}
 
 	public void autonomousInit() {
@@ -111,6 +110,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void commonPeriodic() {
+		vision.update(camera);
+		
 		// Handle time
 		timeLast = timeCurrent;
 		timeCurrent = System.nanoTime() / 1000000000.0;

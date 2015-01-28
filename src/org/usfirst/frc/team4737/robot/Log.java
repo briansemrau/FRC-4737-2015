@@ -26,6 +26,7 @@ public class Log {
 		});
 	}
 
+	private static double startTime = System.nanoTime() / 1000000000.0;
 	private static String date;
 	static {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -39,20 +40,14 @@ public class Log {
 	}
 
 	public static void println(Object o) {
-		System.out.println("Log: " + o);
-		log.add(o.toString());
+		System.out.println("[" + (System.nanoTime() / 1000000000.0 - startTime) + "s]" + o);
+		log.add("[" + (System.nanoTime() / 1000000000.0 - startTime) + "s]" + o.toString());
 	}
 
 	public static void saveLog() {
 		System.out.println("Saving session log...");
 
-		String outputFile = new String();
-		File f = new File("/Volumes/NO NAME");
-		if (f.exists() && f.isDirectory()) {
-			outputFile = "/Volumes/NO NAME/log" + date + ".txt";
-		} else {
-			outputFile = "log" + date + ".txt";
-		}
+		String outputFile = "/home/lvuser/LOGS/log" + date + ".txt";
 
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
@@ -61,7 +56,7 @@ public class Log {
 				writer.write(line + "\n");
 			}
 			writer.close();
-			System.out.println("Finished!");
+			System.out.println("Finished saving log.");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Failed to write log.");

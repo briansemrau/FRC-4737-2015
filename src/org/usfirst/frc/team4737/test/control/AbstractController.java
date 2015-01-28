@@ -2,7 +2,7 @@ package org.usfirst.frc.team4737.test.control;
 
 import java.util.ArrayList;
 
-import org.usfirst.frc.team4737.test.Robot;
+import org.usfirst.frc.team4737.robot.test.Robot;
 import org.usfirst.frc.team4737.test.control.task.AbstractRobotTask;
 
 /**

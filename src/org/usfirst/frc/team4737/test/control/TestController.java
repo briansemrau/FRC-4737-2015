@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4737.test.control;
 
-import org.usfirst.frc.team4737.test.Robot;
+import org.usfirst.frc.team4737.robot.test.Robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.image.NIVisionException;
@@ -25,14 +25,14 @@ public class TestController extends AbstractController {
 //		else
 //			talontest.set(0);
 		if (joy.getTrigger()) {
-			RGBImage image = null;
-			robot.camera.getImage(image);
-			try {
-				image.write("IMAGE.png");
-				image.free();
-			} catch (NIVisionException e) {
-				e.printStackTrace();
-			}
+//			RGBImage image = null;
+//			robot.camera.getImage(image);
+//			try {
+//				image.write("IMAGE.png");
+//				image.free();
+//			} catch (NIVisionException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 

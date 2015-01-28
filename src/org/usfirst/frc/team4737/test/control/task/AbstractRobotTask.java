@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4737.test.control.task;
 
-import org.usfirst.frc.team4737.test.Robot;
+import org.usfirst.frc.team4737.robot.test.Robot;
 
 public abstract class AbstractRobotTask {
 

@@ -20,11 +20,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
+ * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
+ * described in the IterativeRobot documentation. If you change the name of this class or the package after creating
+ * this project, you must also update the manifest file in the resource directory.
  */
 public class Robot extends IterativeRobot {
 
@@ -33,22 +31,22 @@ public class Robot extends IterativeRobot {
 	public AbstractController teleop;
 	public AbstractController autonomous;
 	public AbstractController test;
-	
+
 	public AbstractController current;
 
 	// Controller Assistants
 
-	public Vision vision; 
-	
+	public Vision vision;
+
 	// Sensors and Actuators
 
 	public AxisCamera camera;
-	
+
 	public Motor driveMotorFrontLeft;
 	public Motor driveMotorRearLeft;
 	public Motor driveMotorFrontRight;
 	public Motor driveMotorRearRight;
-	
+
 	public Gyro gyroscope;
 	public BuiltInAccelerometer accelerometer;
 	public Ultrasonic usd;
@@ -57,7 +55,7 @@ public class Robot extends IterativeRobot {
 
 	public MotorGroup leftDriveMotors;
 	public MotorGroup rightDriveMotors;
-	
+
 	public Lift lift;
 
 	// Values
@@ -75,22 +73,22 @@ public class Robot extends IterativeRobot {
 	 */
 	public double deltaTime;
 	
-	public Positioner position;
-
 	private double sinceLastLogSave;
 
+	public Positioner position;
+
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used for any initialization code.
 	 */
 	public void robotInit() {
 		Log.println("Initializing Robot...");
-		
+
 		Log.println("Initializing controllers...");
 		teleop = new TeleopController(this);
 		autonomous = new AutonomousController(this);
 		test = new TestController(this);
-		
+
+		Log.println("Initializing sensors and actuators...");
 		camera = new AxisCamera(Global.CAMERA_IP);
 		vision = new Vision();
 
@@ -99,10 +97,8 @@ public class Robot extends IterativeRobot {
 		driveMotorFrontRight = new Motor(Global.DRIVEMOTOR_FR, false);
 		driveMotorRearRight = new Motor(Global.DRIVEMOTOR_RR, false);
 
-		leftDriveMotors = new MotorGroup(driveMotorFrontLeft,
-				driveMotorRearLeft);
-		rightDriveMotors = new MotorGroup(driveMotorFrontRight,
-				driveMotorRearRight);
+		leftDriveMotors = new MotorGroup(driveMotorFrontLeft, driveMotorRearLeft);
+		rightDriveMotors = new MotorGroup(driveMotorFrontRight, driveMotorRearRight);
 
 		gyroscope = new Gyro(Global.GYROSCOPE);
 		gyroscope.initGyro(); // TODO: add some button to do this maybe
@@ -152,25 +148,25 @@ public class Robot extends IterativeRobot {
 		commonPeriodic();
 		test.periodicUpdate(this);
 	}
-	
+
 	public void disabledInit() {
-//		current = disable;
 	}
 
 	/**
 	 * This function is called periodically while disabled
 	 */
 	public void disabledPeriodic() {
-		commonPeriodic();
-		test.periodicUpdate(this);
 	}
 
 	public void commonPeriodic() {
+		// Handle vision
+		vision.update(camera);
+
 		// Handle time
 		timeLast = timeCurrent;
 		timeCurrent = System.nanoTime() / 1000000000.0;
 		deltaTime = timeCurrent - timeLast;
-		
+
 		// Handle log
 		sinceLastLogSave += deltaTime;
 		if (sinceLastLogSave >= Global.LOG_AUTOSAVE_PERIOD) {
@@ -193,8 +189,7 @@ public class Robot extends IterativeRobot {
 		// Include ALL measurable values in here
 
 		DataRecorder.record("time (s)", startTime);
-		DataRecorder.record("voltage", DriverStation.getInstance()
-				.getBatteryVoltage());
+		DataRecorder.record("voltage", DriverStation.getInstance().getBatteryVoltage());
 		DataRecorder.record("gyroRX", position.gyroAngle.x);
 		DataRecorder.record("gyroRY", position.gyroAngle.y);
 		DataRecorder.record("gyroRZ", position.gyroAngle.z);

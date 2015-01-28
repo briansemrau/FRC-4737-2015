@@ -9,21 +9,21 @@ package org.usfirst.frc.team4737.robot;
  */
 public class Global {
 	
-	public static final String VERSION = "0.1";
+	public static final String VERSION = "0.0.0 aplha";
 
 	// Fundamental constants
 
-	public static final double GRAVITY = 9.80;
+	public static final double GRAVITY = 9.81;
 
 	// Other constants
 
-	public static final double LOW_VOLTAGE = 11; // TODO: find the voltage when
+	public static final double LOG_AUTOSAVE_PERIOD = 5;
+	
+	public static final double LOW_VOLTAGE = 12; // TODO: find the voltage when
 													// the robot's maximum
 													// velocity begins to
 													// decrease
 	public static final double DECELERATION_MOD = 0.1; // TODO calculate
-	
-	public static final double LOG_AUTOSAVE_PERIOD = 10;
 	
 	// Control tuning
 
@@ -43,8 +43,8 @@ public class Global {
 	
 	public static final String CAMERA_IP = "10.47.37.11";
 
-	public static final int JOYSTICK_1_USB = 1;
-	public static final int JOYSTICK_2_USB = 2;
+	public static final int JOYSTICK_1_USB = 0;
+	public static final int JOYSTICK_2_USB = 1;
 
 	public static final int DRIVEMOTOR_FL = -1;
 	public static final int DRIVEMOTOR_FR = -1;

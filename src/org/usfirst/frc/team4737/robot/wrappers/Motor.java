@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4737.robot.wrappers;
 
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.TalonSRX;
 
 /**
  * A wrapper for the Victor including the ability to invert the output.
@@ -10,12 +10,12 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class Motor {
 
-	private Talon talon;
+	private TalonSRX talon;
 	private boolean inverted;
 	private double setValue;
 	
 	public Motor(int pin, boolean inverted) {
-		talon = new Talon(pin);
+		talon = new TalonSRX(pin);
 		this.inverted = inverted;
 	}
 	

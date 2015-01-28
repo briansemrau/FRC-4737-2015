@@ -8,10 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.usfirst.frc.team4737.robot.Log;
+
 /**
  * 
- * This class is for recording, saving, and outputting data such as gyroscope
- * readings, position, battery voltage, etc.
+ * This class is for recording, saving, and outputting data such as gyroscope readings, position, battery voltage, etc.
  * 
  * @author Brian
  *
@@ -56,20 +57,14 @@ public class DataRecorder {
 	}
 
 	/**
-	 * Outputs all the collected data to a log on the RoboRio's file system
-	 * (<code>/home/lvuser/datalog#.txt</code>) or to a flash drive if available.
+	 * Outputs all the collected data to a log on the RoboRio's file system (
+	 * <code>/home/lvuser/DATALOGS/datalog<#>.txt</code>) or to a flash drive if available.
 	 */
 	public static void saveDataLog() {
-		System.out.println("Saving session data...");
-		
-		String outputFile = new String();
-		File f = new File("/Volumes/NO NAME");
-		if (f.exists() && f.isDirectory()) {
-			outputFile = "/Volumes/NO NAME/datalog" + date + ".txt";
-		} else {
-			outputFile = "datalog" + date + ".txt";
-		}
-		
+		Log.println("Saving session data...");
+
+		String outputFile = "/home/lvuser/DATALOGS/datalog" + date + ".txt";
+
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputFile)));
 			for (Dataset set : datasets) {
@@ -80,21 +75,20 @@ public class DataRecorder {
 				writer.write(output + "\n");
 			}
 			writer.close();
-			System.out.println("Finished!");
+			Log.println("Finished!");
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("Failed to write data log.");
+			Log.println("Failed to write data log.");
 		}
-		
+
 	}
 
 	/**
-	 * Searches for a data set with the given variable name and returns it. If
-	 * the set is not found, a new data set is created.
+	 * Searches for a data set with the given variable name and returns it. If the set is not found, a new data set is
+	 * created.
 	 * 
 	 * @param varname
-	 *            - The name of the variable recorded in the data set in search
-	 *            of.
+	 *            - The name of the variable recorded in the data set in search of.
 	 * @return Returns the found data set, or a newly created data set.
 	 */
 	private static Dataset findDataset(String varname) {
