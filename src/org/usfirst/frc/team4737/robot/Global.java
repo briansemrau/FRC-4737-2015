@@ -9,8 +9,11 @@ package org.usfirst.frc.team4737.robot;
  */
 public class Global {
 	
-	public static final String VERSION = "0.0.0 aplha";
-
+	public static final int V_COMPETITION = 0; // The first value is the code version after each competition
+	public static final int V_MAJOR = 0; // The major value is for major code additions
+	public static final int V_MINOR = 0; // The minor value is for minor code edits
+	public static final String VERSION = "" + V_COMPETITION + "." + V_MAJOR + "." + V_MINOR + " indev";
+	
 	// Fundamental constants
 
 	public static final double GRAVITY = 9.81;
@@ -29,15 +32,12 @@ public class Global {
 
 	public static final double ARCADE_YAW_SENSITIVITY = 1; // TODO tune
 
-	public static final double AUTOMOVE_kP = 0.1; // TODO tune
-	public static final double AUTOMOVE_ANGULAR_kP = 0.01; // TODO tune
+	public static final double AUTOMOVE_YAW_SENTITIVITY = 1.0; // TODO tune
 	public static final double AUTOMOVE_MAXSPEED = 1.0; // TODO tune
 	
 	public static final double LIFT_MIN_HEIGHT = 0.0;
 	public static final double LIFT_MAX_HEIGHT = 1.8; // TODO tune
 	public static final double LIFT_MAX_DIFFERENCE = 0.005; // TODO tune
-	public static final double LIFT_kP = 0.1; // TODO tune
-	public static final double LIFT_kI = 0.01; // TODO tune
 
 	// Sensor/Actuator pins
 	
@@ -46,20 +46,15 @@ public class Global {
 	public static final int JOYSTICK_1_USB = 0;
 	public static final int JOYSTICK_2_USB = 1;
 
-	public static final int DRIVEMOTOR_FL = -1;
-	public static final int DRIVEMOTOR_FR = -1;
-	public static final int DRIVEMOTOR_RL = -1;
-	public static final int DRIVEMOTOR_RR = -1;
+	public static final int DRIVEMOTOR_FL = 11;
+	public static final int DRIVEMOTOR_FR = 12;
+	public static final int DRIVEMOTOR_RL = 13;
+	public static final int DRIVEMOTOR_RR = 14;
 
-	public static final int GYROSCOPE = -1;
+	public static final int GYROSCOPE = 0;
 	
-	public static final int USD_DIGITAL_IN = -1;
-	public static final int USD_DIGITAL_OUT = -1;
-	
-	public static final int LED_1 = -1;
-	
-	public static final int LIFT_MOTOR_LEFT = -1;
-	public static final int LIFT_MOTOR_RIGHT = -1;
+	public static final int LIFT_MOTOR_LEFT = 15;
+	public static final int LIFT_MOTOR_RIGHT = 16;
 	public static final int LIFT_ENCODER_LEFTA = -1;
 	public static final int LIFT_ENCODER_LEFTB = -1;
 	public static final int LIFT_ENCODER_RIGHTA = -1;

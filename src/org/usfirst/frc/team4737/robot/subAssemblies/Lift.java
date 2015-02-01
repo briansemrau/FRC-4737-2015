@@ -56,13 +56,13 @@ public class Lift {
 
 		}
 
-		double leftPower = errorLeft * Global.LIFT_kP + integralLeft
-				* Global.LIFT_kI;
-		double rightPower = errorRight * Global.LIFT_kP + integralRight
-				* Global.LIFT_kI;
-
-		leftMotor.set(leftPower);
-		rightMotor.set(rightPower);
+//		double leftPower = errorLeft * Global.LIFT_kP + integralLeft
+//				* Global.LIFT_kI;
+//		double rightPower = errorRight * Global.LIFT_kP + integralRight
+//				* Global.LIFT_kI;
+//
+//		leftMotor.set(leftPower);
+//		rightMotor.set(rightPower);
 
 		// Rewrite values
 		prevHeightL = heightL;

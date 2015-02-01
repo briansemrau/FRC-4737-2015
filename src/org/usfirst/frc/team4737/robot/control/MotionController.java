@@ -1,10 +1,10 @@
 package org.usfirst.frc.team4737.robot.control;
 
-import org.usfirst.frc.team4737.robot.math.Vector2d;
-
 /**
  * Uses functionalities of PID motion controllers and TMPs (Trapezoidal Motion Profilers) to create an all-inclusive
- * motion controller.
+ * motion controller.<br>
+ * <br>
+ * Note: The differential term is currently not included.
  * 
  * @author Brian
  *
@@ -12,10 +12,10 @@ import org.usfirst.frc.team4737.robot.math.Vector2d;
 public class MotionController {
 
 	// Control values
-	public double kP, kI, kD;
+	public double kP, kI;// , kD;
 	public double accelLimit, velLimit, decelLimit;
 	private DataTable accelTuning;
-	
+
 	private boolean mapping;
 	private double lastValue;
 
@@ -27,15 +27,16 @@ public class MotionController {
 	private double integralDecay;
 
 	// Differential term handling
-	private int recordLength;
-	private Vector2d[] velocityRecord;
-	private boolean validDiff = false;
+	// private int recordLength;
+	// private Vector2d[] velocityRecord;
+	// private boolean validDiff = false;
 
-	public MotionController(double kP, double kI, double kD, double accelLimit, double velLimit, double decelLimit,
-			double expectedDeltaT, double integralDecay, int differentialRecordingLength, String accelTuningFile) {
+	public MotionController(double kP, double kI, /* double kD, */double accelLimit, double velLimit, double decelLimit,
+			double expectedDeltaT, double integralDecay, /* int differentialRecordingLength, */
+			String accelTuningFile) {
 		this.kP = kP;
 		this.kI = kI;
-		this.kD = kD;
+		// this.kD = kD;
 		this.accelLimit = accelLimit;
 		this.velLimit = velLimit;
 		this.decelLimit = decelLimit;
@@ -49,8 +50,8 @@ public class MotionController {
 
 		this.integralDecay = integralDecay;
 
-		this.recordLength = differentialRecordingLength;
-		velocityRecord = new Vector2d[recordLength];
+		// this.recordLength = differentialRecordingLength;
+		// velocityRecord = new Vector2d[recordLength];
 	}
 
 	public void setGoal(double goal) {
@@ -69,7 +70,7 @@ public class MotionController {
 		// Things to think about:
 		// - integral integration before or after power calculation?
 		// - same for differential
-		
+
 		// Mapping
 		// Note: this will not be very accurate due to time delay between updates.
 		// This could be made more accurate by calculating jerk
@@ -85,33 +86,33 @@ public class MotionController {
 		integral += error * deltaT;
 
 		// Differential calculation
-		for (int n = recordLength - 2; n > 0; n--) {
-			velocityRecord[n + 1] = velocityRecord[n];
-		}
-		velocityRecord[0] = new Vector2d(velocity, deltaT);
-		double differential = 0;
-		if (validDiff) {
-			double totalTime = 0, totalValue = 0;
-			for (int n = 0; n < recordLength; n++) {
-				totalValue += velocityRecord[n].x;
-				totalTime += velocityRecord[n].y;
-			}
-			differential = totalValue / totalTime;
-		} else {
-			// Checks if the record is full of values yet
-			validDiff = velocityRecord[recordLength - 1] != null;
-		}
+		// for (int n = recordLength - 2; n > 0; n--) {
+		// velocityRecord[n + 1] = velocityRecord[n];
+		// }
+		// velocityRecord[0] = new Vector2d(velocity, deltaT);
+		// double differential = 0;
+		// if (validDiff) {
+		// double totalTime = 0, totalValue = 0;
+		// for (int n = 0; n < recordLength; n++) {
+		// totalValue += velocityRecord[n].x;
+		// totalTime += velocityRecord[n].y;
+		// }
+		// differential = totalValue / totalTime;
+		// } else {
+		// // Checks if the record is full of values yet
+		// validDiff = velocityRecord[recordLength - 1] != null;
+		// }
 
-		double pidPower = (kP * error) + (kI * integral) + (kD * differential);
+		double pidPower = (kP * error) + (kI * integral);// + (kD * differential);
 
 		double limitedPower = pidPower;
 
 		// TMP power limiting
-		
+
 		if (velocity > velLimit) {
 			limitedPower = accelTuning.findClosestX((velLimit - velocity));
 		}
-		
+
 		if (acceleration > 0) {
 			if (acceleration > accelLimit || accelTuning.getY(pidPower) > accelLimit) {
 				limitedPower = 0;
@@ -123,9 +124,9 @@ public class MotionController {
 		}
 
 		// Integral decay
-		integral -= integralDecay * deltaT;
+		integral += (integral < 0 ? integralDecay * deltaT : integral > 0 ? -integralDecay * deltaT : 0);
 
 		return limitedPower;
 	}
-	
+
 }

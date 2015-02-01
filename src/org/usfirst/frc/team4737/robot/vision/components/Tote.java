@@ -5,7 +5,7 @@ public class Tote extends GamePiece {
 	public static Tote[] createTotes(LGroup[] groups) {
 		for (LGroup group : groups) {
 			
-			
+			// TODO
 			
 		}
 		return null;

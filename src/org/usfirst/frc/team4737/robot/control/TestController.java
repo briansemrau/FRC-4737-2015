@@ -17,6 +17,7 @@ public class TestController extends AbstractController {
 //		talontest = new PWM(0);
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public void periodicUpdate(Robot robot) {
 		super.periodicUpdate(robot);

@@ -2,6 +2,7 @@ package org.usfirst.frc.team4737.robot;
 
 import org.usfirst.frc.team4737.robot.control.AbstractController;
 import org.usfirst.frc.team4737.robot.control.AutonomousController;
+import org.usfirst.frc.team4737.robot.control.Dependencies;
 import org.usfirst.frc.team4737.robot.control.TeleopController;
 import org.usfirst.frc.team4737.robot.control.TestController;
 import org.usfirst.frc.team4737.robot.data.DataRecorder;
@@ -12,11 +13,10 @@ import org.usfirst.frc.team4737.robot.vision.Vision;
 import org.usfirst.frc.team4737.robot.wrappers.Motor;
 
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.util.AllocationException;
 import edu.wpi.first.wpilibj.vision.AxisCamera;
 
 /**
@@ -31,8 +31,6 @@ public class Robot extends IterativeRobot {
 	public AbstractController teleop;
 	public AbstractController autonomous;
 	public AbstractController test;
-
-	public AbstractController current;
 
 	// Controller Assistants
 
@@ -49,9 +47,6 @@ public class Robot extends IterativeRobot {
 
 	public Gyro gyroscope;
 	public BuiltInAccelerometer accelerometer;
-	public Ultrasonic usd;
-
-	public DigitalOutput led1;
 
 	public MotorGroup leftDriveMotors;
 	public MotorGroup rightDriveMotors;
@@ -72,15 +67,17 @@ public class Robot extends IterativeRobot {
 	 * The time passed since the last periodic update.
 	 */
 	public double deltaTime;
-	
+
 	private double sinceLastLogSave;
 
-	public Positioner position;
+	public Positioner positioner;
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any initialization code.
 	 */
 	public void robotInit() {
+		Log.println("Robot Code Version " + Global.VERSION);
+		Log.println("");
 		Log.println("Initializing Robot...");
 
 		Log.println("Initializing controllers...");
@@ -89,32 +86,44 @@ public class Robot extends IterativeRobot {
 		test = new TestController(this);
 
 		Log.println("Initializing sensors and actuators...");
+		Log.println("\tUsing camera on port " + Global.CAMERA_IP);
 		camera = new AxisCamera(Global.CAMERA_IP);
 		vision = new Vision();
 
+		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_FL);
 		driveMotorFrontLeft = new Motor(Global.DRIVEMOTOR_FL, false);
+		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_RL);
 		driveMotorRearLeft = new Motor(Global.DRIVEMOTOR_RL, false);
+		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_FR);
 		driveMotorFrontRight = new Motor(Global.DRIVEMOTOR_FR, false);
+		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_RR);
 		driveMotorRearRight = new Motor(Global.DRIVEMOTOR_RR, false);
 
 		leftDriveMotors = new MotorGroup(driveMotorFrontLeft, driveMotorRearLeft);
 		rightDriveMotors = new MotorGroup(driveMotorFrontRight, driveMotorRearRight);
 
-		gyroscope = new Gyro(Global.GYROSCOPE);
-		gyroscope.initGyro(); // TODO: add some button to do this maybe
-		accelerometer = new BuiltInAccelerometer();
-		usd = new Ultrasonic(Global.USD_DIGITAL_IN, Global.USD_DIGITAL_OUT);
+		try {
+			gyroscope = new Gyro(Global.GYROSCOPE);
+			gyroscope.initGyro(); // TODO: add some button to do this maybe
+			Log.println("\tUsing gyro on analog " + Global.GYROSCOPE);
+		} catch (AllocationException e) {
+			Dependencies.GYROSCOPE.disable();
+			Log.println("\tGyroscope not found, should be in analog " + Global.GYROSCOPE);
+		}
 
-		led1 = new DigitalOutput(Global.LED_1);
+		accelerometer = new BuiltInAccelerometer();
 
 		timeLast = System.nanoTime() / 1000000000.0;
 		timeCurrent = System.nanoTime() / 1000000000.0;
 
-		position = new Positioner(this);
+		positioner = new Positioner(this);
+
+		// Log.println("\tLOST DEPENDENCIES: " + ); // TODO
+
+		Log.println("Finished robot initialization.");
 	}
 
 	public void autonomousInit() {
-		current = autonomous;
 	}
 
 	/**
@@ -126,7 +135,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		current = teleop;
 	}
 
 	/**
@@ -138,7 +146,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void testInit() {
-		current = test;
 	}
 
 	/**
@@ -172,9 +179,10 @@ public class Robot extends IterativeRobot {
 		if (sinceLastLogSave >= Global.LOG_AUTOSAVE_PERIOD) {
 			sinceLastLogSave = 0;
 			Log.saveLog();
+			DataRecorder.saveDataLog();
 		}
 
-		position.update(this, deltaTime);
+		positioner.update(this, deltaTime);
 
 		// Data mining
 		recordData();
@@ -190,18 +198,18 @@ public class Robot extends IterativeRobot {
 
 		DataRecorder.record("time (s)", startTime);
 		DataRecorder.record("voltage", DriverStation.getInstance().getBatteryVoltage());
-		DataRecorder.record("gyroRX", position.gyroAngle.x);
-		DataRecorder.record("gyroRY", position.gyroAngle.y);
-		DataRecorder.record("gyroRZ", position.gyroAngle.z);
-		DataRecorder.record("accelerationX (?)", position.globalAcceleration.x);
-		DataRecorder.record("accelerationY (?)", position.globalAcceleration.y);
-		DataRecorder.record("accelerationZ (?)", position.globalAcceleration.z);
-		DataRecorder.record("velocityX", position.velocity.x);
-		DataRecorder.record("velocityY", position.velocity.y);
-		DataRecorder.record("velocityZ", position.velocity.z);
-		DataRecorder.record("positionX", position.position.x);
-		DataRecorder.record("positionY", position.position.y);
-		DataRecorder.record("positionZ", position.position.z);
+		DataRecorder.record("gyroRX", positioner.gyroAngle.x);
+		DataRecorder.record("gyroRY", positioner.gyroAngle.y);
+		DataRecorder.record("gyroRZ", positioner.gyroAngle.z);
+		DataRecorder.record("accelerationX", positioner.globalAcceleration.x);
+		DataRecorder.record("accelerationY", positioner.globalAcceleration.y);
+		DataRecorder.record("accelerationZ", positioner.globalAcceleration.z);
+		DataRecorder.record("velocityX", positioner.velocity.x);
+		DataRecorder.record("velocityY", positioner.velocity.y);
+		DataRecorder.record("velocityZ", positioner.velocity.z);
+		DataRecorder.record("positionX", positioner.position.x);
+		DataRecorder.record("positionY", positioner.position.y);
+		DataRecorder.record("positionZ", positioner.position.z);
 
 		double endTime = System.nanoTime() / 1000000000.0;
 

@@ -101,12 +101,15 @@ public class Vector3d {
 	 *            - Rotation about the Z axis
 	 */
 	public void rotate(double rx, double ry, double rz) {
-		double sx = Math.sin(rx);
-		double sy = Math.sin(ry);
-		double sz = Math.sin(rz);
-		double cx = Math.cos(rx);
-		double cy = Math.cos(ry);
-		double cz = Math.cos(rz);
+		double rxRad = Math.toRadians(rx);
+		double ryRad = Math.toRadians(ry);
+		double rzRad = Math.toRadians(rz);
+		double sx = Math.sin(rxRad);
+		double sy = Math.sin(ryRad);
+		double sz = Math.sin(rzRad);
+		double cx = Math.cos(rxRad);
+		double cy = Math.cos(ryRad);
+		double cz = Math.cos(rzRad);
 
 		double newX = cy * (sz * y + cz * x) - sy * z;
 		double newY = sx * (cy * z + sy * (sz * y + cz * x)) + cx * (cz * y - sz * x);
@@ -128,6 +131,10 @@ public class Vector3d {
 	 */
 	public Vector3d integral(double deltaTime) {
 		return scaled(deltaTime);
+	}
+	
+	public double magnitude() {
+		return Math.sqrt(Math.sqrt(x * x + y * y) + z * z);
 	}
 
 	public Vector3d clone() {

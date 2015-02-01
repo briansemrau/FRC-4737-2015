@@ -1,21 +1,21 @@
 package org.usfirst.frc.team4737.robot.wrappers;
 
-import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.CANTalon;;
 
 /**
- * A wrapper for the Victor including the ability to invert the output.
+ * A wrapper for the CanTalon including the ability to invert the output.
  * 
  * @author Brian
  *
  */
 public class Motor {
 
-	private TalonSRX talon;
+	private CANTalon talon;
 	private boolean inverted;
 	private double setValue;
 	
 	public Motor(int pin, boolean inverted) {
-		talon = new TalonSRX(pin);
+		talon = new CANTalon(pin);
 		this.inverted = inverted;
 	}
 	

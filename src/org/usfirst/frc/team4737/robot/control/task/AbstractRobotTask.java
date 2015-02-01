@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4737.robot.control.task;
 
 import org.usfirst.frc.team4737.robot.Robot;
+import org.usfirst.frc.team4737.robot.control.Dependency;
 
 public abstract class AbstractRobotTask {
 
@@ -36,12 +37,15 @@ public abstract class AbstractRobotTask {
 	 * The current time (in seconds) measured most recently.
 	 */
 	private double timeCurrent;
+	
+	private Dependency[] dependencies;
 
-	private AbstractRobotTask(String name) {
+	private AbstractRobotTask(String name, Dependency... dependencies) {
 		this.name = name;
 		timeInit = System.nanoTime() / 1000000000.0;
 		timeLast = System.nanoTime() / 1000000000.0;
 		timeCurrent = System.nanoTime() / 1000000000.0;
+		this.dependencies = dependencies;
 	}
 
 	/**
@@ -57,7 +61,7 @@ public abstract class AbstractRobotTask {
 	 *            automatically terminated. This is necessary for things such as
 	 *            movement.
 	 */
-	public AbstractRobotTask(String name, boolean timeKill) {
+	public AbstractRobotTask(String name, boolean timeKill, Dependency... dependencies) {
 		this(name);
 		this.timeKill = timeKill;
 		if (timeKill) {
@@ -67,6 +71,7 @@ public abstract class AbstractRobotTask {
 			timeLeftAlive = Double.POSITIVE_INFINITY;
 			timeToLive = Double.POSITIVE_INFINITY;
 		}
+		this.dependencies = dependencies;
 	}
 
 	/**
@@ -109,6 +114,9 @@ public abstract class AbstractRobotTask {
 			if (timeLeftAlive <= 0)
 				finish();
 			timeLeftAlive -= deltaTime();
+		}
+		for (Dependency d : dependencies) {
+			if (!d.enabled()) return;
 		}
 	}
 

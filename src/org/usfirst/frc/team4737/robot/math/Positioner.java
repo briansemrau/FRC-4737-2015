@@ -4,7 +4,7 @@ import org.usfirst.frc.team4737.robot.Global;
 import org.usfirst.frc.team4737.robot.Robot;
 
 /**
- * Handles all the measured and calculated positioning of the robot
+ * Handles all the measured and calculated positioning of the robot.
  * 
  * @author Brian
  *
@@ -34,6 +34,15 @@ public class Positioner {
 	 */
 	public Vector3d avgGyroAngle;
 	/**
+	 * The calculated current angular speed of the robot.
+	 */
+	public Vector3d angularSpeed;
+	private Vector3d prevAngularSpeed;
+	/**
+	 * The calculated current angular acceleration of the robot.
+	 */
+	public Vector3d angularAccel;
+	/**
 	 * The calculated velocity of the robot.
 	 */
 	public Vector3d velocity;
@@ -57,26 +66,36 @@ public class Positioner {
 		globalAcceleration = new Vector3d();
 		prevGlobalAcceleration = new Vector3d();
 		avgAcceleration = new Vector3d();
-		
+
 		gyroAngle = new Vector3d();
 		prevGyroAngle = new Vector3d();
 		avgGyroAngle = new Vector3d();
-		
+
+		angularSpeed = new Vector3d();
+		prevAngularSpeed = new Vector3d();
+		angularAccel = new Vector3d();
+
 		velocity = new Vector3d();
 		prevVelocity = new Vector3d();
 		avgVelocity = new Vector3d();
-		
+
 		position = new Vector3d();
 		prevPosition = new Vector3d();
 		avgPosition = new Vector3d();
 	}
 
+	/**
+	 * The periodic update to be run every iteration of the robot periodic code.
+	 * @param robot - The robot
+	 * @param deltaTime - The time since last update
+	 */
 	public void update(Robot robot, double deltaTime) {
 		// Re-record previous values
 		prevGlobalAcceleration = globalAcceleration.clone();
 		prevGyroAngle = gyroAngle.clone();
 		prevVelocity = velocity.clone();
 		prevPosition = position.clone();
+		prevAngularSpeed = angularSpeed.clone();
 
 		// Measure acceleration. The accelerometer returns values in Gs
 		localAcceleration.x = robot.accelerometer.getX() / Global.GRAVITY;
@@ -85,21 +104,22 @@ public class Positioner {
 
 		// Measure angle using gyroscope
 		gyroAngle.z = robot.gyroscope.getAngle();
-		
-		// Calculate average gyroscope value
+
+		// Calculate angular values
 		avgGyroAngle = gyroAngle.average(prevGyroAngle);
+
+		angularSpeed = gyroAngle.minus(prevGyroAngle).scaled(1.0 / deltaTime);
+		angularAccel = angularSpeed.minus(prevAngularSpeed).scaled(1.0 / deltaTime);
 
 		// Calculate global acceleration
 		globalAcceleration = localAcceleration.clone();
 		globalAcceleration.rotate(avgGyroAngle.x, avgGyroAngle.y, avgGyroAngle.z);
 
 		// Integrate velocity and position
-		velocity.add(globalAcceleration.integral(deltaTime));
-		position.add(velocity.integral(deltaTime));
-
-		// Calculate average positioning
 		avgAcceleration = globalAcceleration.average(prevGlobalAcceleration);
+		velocity.add(avgAcceleration.integral(deltaTime));
 		avgVelocity = velocity.average(prevVelocity);
+		position.add(avgVelocity.integral(deltaTime));
 		avgPosition = position.average(prevPosition);
 	}
 

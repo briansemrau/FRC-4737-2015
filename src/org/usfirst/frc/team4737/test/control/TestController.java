@@ -3,8 +3,6 @@ package org.usfirst.frc.team4737.test.control;
 import org.usfirst.frc.team4737.robot.test.Robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.image.NIVisionException;
-import edu.wpi.first.wpilibj.image.RGBImage;
 
 public class TestController extends AbstractController {
 
