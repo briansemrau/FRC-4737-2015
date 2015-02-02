@@ -1,11 +1,11 @@
 package org.usfirst.frc.team4737.robot.control.task;
 
 import org.usfirst.frc.team4737.robot.Robot;
+import org.usfirst.frc.team4737.robot.subAssemblies.Lift;
 
-public class LiftMoveTask extends AbstractRobotTask {
+public class LiftMoveTask {
 
 	public LiftMoveTask() {
-		super("liftmovetask", 10);
 	}
 	
 	public void periodicExecution(Robot robot) {

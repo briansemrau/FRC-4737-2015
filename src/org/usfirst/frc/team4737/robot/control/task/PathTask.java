@@ -3,7 +3,7 @@ package org.usfirst.frc.team4737.robot.control.task;
 import org.usfirst.frc.team4737.robot.Robot;
 import org.usfirst.frc.team4737.robot.math.Vector2d;
 
-public class PathTask extends AbstractRobotTask {
+public class PathTask {
 
 	public static final int GLOBAL = 1;
 	public static final int RELATIVE_TO_LAST = 2;
@@ -15,7 +15,6 @@ public class PathTask extends AbstractRobotTask {
 	private AutoMoveTask movetask;
 
 	public PathTask(Vector2d[] globalpath/* , int mode */) {
-		super("pathTask", false);
 		this.path = globalpath;
 		// this.mode = mode;
 	}

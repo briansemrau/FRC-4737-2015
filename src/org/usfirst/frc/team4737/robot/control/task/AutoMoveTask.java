@@ -4,7 +4,7 @@ import org.usfirst.frc.team4737.robot.Global;
 import org.usfirst.frc.team4737.robot.Robot;
 import org.usfirst.frc.team4737.robot.math.Vector2d;
 
-public class AutoMoveTask extends AbstractRobotTask {
+public class AutoMoveTask {
 
 	private boolean global;
 	private Vector2d locationOrig;
@@ -21,7 +21,6 @@ public class AutoMoveTask extends AbstractRobotTask {
 	 *            location/angle in task initialization).
 	 */
 	public AutoMoveTask(Vector2d goal, boolean globalCoords) {
-		super("autonMoveTask", 30);
 		this.global = globalCoords;
 	}
 
