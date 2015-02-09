@@ -11,7 +11,7 @@ public class AutoMoveTask {
 	private Vector2d goal;
 	
 	/**
-	 * An automatic movement task that runs for a maximum of 30 seconds.
+	 * An automatic movement task.
 	 * 
 	 * @param goal
 	 *            - The coordinates to move to

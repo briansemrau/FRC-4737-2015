@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot {
 	public Motor driveMotorRearLeft;
 	public Motor driveMotorFrontRight;
 	public Motor driveMotorRearRight;
-
+	
 	public Gyro gyroscope;
 	public BuiltInAccelerometer accelerometer;
 
@@ -156,18 +156,9 @@ public class Robot extends IterativeRobot {
 		test.periodicUpdate(this);
 	}
 
-	public void disabledInit() {
-	}
-
-	/**
-	 * This function is called periodically while disabled
-	 */
-	public void disabledPeriodic() {
-	}
-
 	public void commonPeriodic() {
 		// Handle vision
-		vision.update(camera);
+		// vision.update(camera);
 
 		// Handle time
 		timeLast = timeCurrent;

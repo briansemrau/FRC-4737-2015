@@ -49,6 +49,17 @@ public class Vector2d {
 	public double distanceSquared(Vector2d b) {
 		return (b.x - x) * (b.x - x) + (b.y - y) * (b.y - y);
 	}
+	
+	public Vector2d scaled(double max) {
+		double x = this.x;
+		double y = this.y;
+		if (x > max || y > max) {
+			double higher = x > y ? x : y;
+			x *= max / higher;
+			y *= max / higher;
+		}
+		return new Vector2d(x, y);
+	}
 
 	public Vector2d clone() {
 		return new Vector2d(x, y);

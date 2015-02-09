@@ -2,6 +2,7 @@ package org.usfirst.frc.team4737.robot.math;
 
 import org.usfirst.frc.team4737.robot.Global;
 import org.usfirst.frc.team4737.robot.Robot;
+import org.usfirst.frc.team4737.robot.control.Dependencies;
 
 /**
  * Handles all the measured and calculated positioning of the robot.
@@ -86,10 +87,16 @@ public class Positioner {
 
 	/**
 	 * The periodic update to be run every iteration of the robot periodic code.
-	 * @param robot - The robot
-	 * @param deltaTime - The time since last update
+	 * 
+	 * @param robot
+	 *            - The robot
+	 * @param deltaTime
+	 *            - The time since last update
 	 */
 	public void update(Robot robot, double deltaTime) {
+		if (!Dependencies.GYROSCOPE.enabled())
+			return;
+
 		// Re-record previous values
 		prevGlobalAcceleration = globalAcceleration.clone();
 		prevGyroAngle = gyroAngle.clone();

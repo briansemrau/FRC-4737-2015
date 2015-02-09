@@ -26,7 +26,8 @@ public class Global {
 													// the robot's maximum
 													// velocity begins to
 													// decrease
-	public static final double DECELERATION_MOD = 0.1; // TODO calculate
+	
+	public static final int DATATABLE_SAVE_BUTTON = 6; // TODO pick
 	
 	// Control tuning
 
@@ -34,7 +35,15 @@ public class Global {
 
 	public static final double AUTOMOVE_YAW_SENTITIVITY = 1.0; // TODO tune
 	public static final double AUTOMOVE_MAXSPEED = 1.0; // TODO tune
+	public static final double AUTOMOVE_ANGULAR_kP = 0.1; // TODO tune
+	public static final double AUTOMOVE_kP = 0.1; // TODO tune
 	
+	public static final double LIFT_kP = 0.1;
+	public static final double LIFT_kI = 0.0001;
+	public static final double LIFT_IRANGE = 0.1;
+	public static final double LIFT_MAX_ACCEL = 0.3;
+	public static final double LIFT_MAX_DECEL = 0.3;
+	public static final double LIFT_MAX_VEL = 0.3;
 	public static final double LIFT_MIN_HEIGHT = 0.0;
 	public static final double LIFT_MAX_HEIGHT = 1.8; // TODO tune
 	public static final double LIFT_MAX_DIFFERENCE = 0.005; // TODO tune
@@ -46,15 +55,15 @@ public class Global {
 	public static final int JOYSTICK_1_USB = 0;
 	public static final int JOYSTICK_2_USB = 1;
 
-	public static final int DRIVEMOTOR_FL = 11;
-	public static final int DRIVEMOTOR_FR = 12;
-	public static final int DRIVEMOTOR_RL = 13;
-	public static final int DRIVEMOTOR_RR = 14;
+	public static final int DRIVEMOTOR_FL = -1;
+	public static final int DRIVEMOTOR_FR = -1;
+	public static final int DRIVEMOTOR_RL = -1;
+	public static final int DRIVEMOTOR_RR = -1;
 
 	public static final int GYROSCOPE = 0;
 	
-	public static final int LIFT_MOTOR_LEFT = 15;
-	public static final int LIFT_MOTOR_RIGHT = 16;
+	public static final int LIFT_MOTOR_LEFT = -1;
+	public static final int LIFT_MOTOR_RIGHT = -1;
 	public static final int LIFT_ENCODER_LEFTA = -1;
 	public static final int LIFT_ENCODER_LEFTB = -1;
 	public static final int LIFT_ENCODER_RIGHTA = -1;

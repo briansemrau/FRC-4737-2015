@@ -1,5 +1,8 @@
 package org.usfirst.frc.team4737.robot.control;
 
+import org.usfirst.frc.team4737.robot.Global;
+import org.usfirst.frc.team4737.robot.Log;
+
 /**
  * Uses functionalities of PID motion controllers and TMPs (Trapezoidal Motion Profilers) to create an all-inclusive
  * motion controller.<br>
@@ -24,15 +27,15 @@ public class MotionController {
 
 	// Integral term handling
 	private double integral;
-	private double integralDecay;
+	private double integralRange;
 
 	// Differential term handling
 	// private int recordLength;
 	// private Vector2d[] velocityRecord;
 	// private boolean validDiff = false;
 
-	public MotionController(double kP, double kI, /* double kD, */double accelLimit, double velLimit, double decelLimit,
-			double expectedDeltaT, double integralDecay, /* int differentialRecordingLength, */
+	public MotionController(String id, double kP, double kI, /* double kD, */double accelLimit, double velLimit, double decelLimit,
+			double expectedDeltaT, double integralRange, /* int differentialRecordingLength, */
 			String accelTuningFile) {
 		this.kP = kP;
 		this.kI = kI;
@@ -46,9 +49,11 @@ public class MotionController {
 		} else {
 			accelTuning = new DataTable(.01, -1, 1, 0);
 			mapping = true;
+			Log.println("A data table had to be created! This table will be measured and saved when told to.");
+			Log.println("\tData table save file: " + "" + ", press joystick 2:" + Global.DATATABLE_SAVE_BUTTON + " to save");
 		}
 
-		this.integralDecay = integralDecay;
+		this.integralRange = integralRange;
 
 		// this.recordLength = differentialRecordingLength;
 		// velocityRecord = new Vector2d[recordLength];
@@ -83,7 +88,8 @@ public class MotionController {
 		double error = goal - value;
 
 		// Integral calculation
-		integral += error * deltaT;
+		if (error < integralRange)
+			integral += error * deltaT;
 
 		// Differential calculation
 		// for (int n = recordLength - 2; n > 0; n--) {
@@ -122,9 +128,6 @@ public class MotionController {
 				limitedPower = accelTuning.findClosestX(decelLimit - acceleration);
 			}
 		}
-
-		// Integral decay
-		integral += (integral < 0 ? integralDecay * deltaT : integral > 0 ? -integralDecay * deltaT : 0);
 
 		return limitedPower;
 	}

@@ -58,7 +58,7 @@ public class DataRecorder {
 
 	/**
 	 * Outputs all the collected data to a log on the RoboRio's file system (
-	 * <code>/home/lvuser/DATALOGS/datalog<#>.txt</code>) or to a flash drive if available.
+	 * <code>/home/lvuser/DATALOGS/datalog<#>.txt</code>).
 	 */
 	public static void saveDataLog() {
 		Log.println("Saving session data...");

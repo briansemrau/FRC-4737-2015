@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4737.robot.control;
 
-import java.util.ArrayList;
-
 import org.usfirst.frc.team4737.robot.Robot;
 
 /**

@@ -2,6 +2,7 @@ package org.usfirst.frc.team4737.robot.vision;
 
 import org.usfirst.frc.team4737.robot.Log;
 import org.usfirst.frc.team4737.robot.vision.components.Bin;
+import org.usfirst.frc.team4737.robot.vision.components.BinShape;
 import org.usfirst.frc.team4737.robot.vision.components.GamePiece;
 import org.usfirst.frc.team4737.robot.vision.components.L;
 import org.usfirst.frc.team4737.robot.vision.components.LGroup;
@@ -12,7 +13,6 @@ import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.DrawMode;
 import com.ni.vision.NIVision.MeasurementType;
 import com.ni.vision.NIVision.ParticleFilterCriteria2;
-import com.ni.vision.NIVision.RGBValue;
 import com.ni.vision.NIVision.Rect;
 import com.ni.vision.NIVision.ShapeMode;
 
@@ -38,7 +38,7 @@ public class Vision {
 	Joystick debug;
 
 	public Vision() {
-		Log.println("Initializing vision...");
+		Log.print("Initializing vision...");
 		try {
 			image = new RGBImage();
 		} catch (NIVisionException e) {
@@ -53,7 +53,7 @@ public class Vision {
 		foundTotes = new GamePiece[0];
 		foundBins = new GamePiece[0];
 		debug = new Joystick(0);
-		Log.println("Initialized vision.");
+		Log.println("done.");
 	}
 
 	public void update(AxisCamera camera) {
@@ -69,7 +69,7 @@ public class Vision {
 				Rect4i[] greenRects = getRects(image, ColorThreshold.GREEN); // ColorThreshold.BIN
 
 				Tote[] totes = Tote.createTotes(LGroup.findGroups(L.findLs(whiteRects)));
-				Bin[] bins = new Bin[0];// Bin.getBins(BinShape.findShapes(greenRects));
+				Bin[] bins = Bin.getBins(BinShape.findShapes(greenRects));
 
 				// Record found pieces
 				this.foundTotes = totes;
@@ -78,14 +78,14 @@ public class Vision {
 				// Draw rectangles on image
 				for (int i = 0; i < whiteRects.length; i++) {
 					Rect rect = new Rect(whiteRects[i].y, whiteRects[i].x, whiteRects[i].h, whiteRects[i].w);
-					NIVision.imaqSetToolColor(new RGBValue(255, 255, 255, 0));
+//					NIVision.imaqSetToolColor(new RGBValue(255, 255, 255, 0));
 					NIVision.imaqDrawShapeOnImage(output.image, image.image, rect, DrawMode.DRAW_VALUE,
 							ShapeMode.SHAPE_RECT, 1.0f);
 				}
 
 				for (int i = 0; i < greenRects.length; i++) {
 					Rect rect = new Rect(greenRects[i].y, greenRects[i].x, greenRects[i].h, greenRects[i].w);
-					NIVision.imaqSetToolColor(new RGBValue(0, 255, 0, 0));
+//					NIVision.imaqSetToolColor(new RGBValue(0, 255, 0, 0));
 					NIVision.imaqDrawShapeOnImage(output.image, image.image, rect, DrawMode.DRAW_VALUE,
 							ShapeMode.SHAPE_RECT, 1.0f);
 				}

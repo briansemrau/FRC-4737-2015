@@ -4,6 +4,7 @@ import org.usfirst.frc.team4737.robot.Global;
 import org.usfirst.frc.team4737.robot.Robot;
 import org.usfirst.frc.team4737.robot.control.Dependencies;
 import org.usfirst.frc.team4737.robot.control.MotionController;
+import org.usfirst.frc.team4737.robot.math.Vector2d;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
@@ -11,7 +12,6 @@ import edu.wpi.first.wpilibj.Joystick.AxisType;
 /**
  * The task for joystick control of the robot.<br>
  * <br>
- * This class is an example for how tasks should be implemented.
  * 
  * @author Brian
  *
@@ -44,8 +44,8 @@ public class JoystickMovement {
 	public JoystickMovement(Joystick primary, Joystick secondary, Drive mode) {
 		joystick1 = primary;
 		joystick2 = secondary;
-		forward = new MotionController(0.1, 0, 2, 10, 2, 0.05, 0, null);
-		angular = new MotionController(0.1, 0, 2, 10, 2, 0.05, 0, null);
+		forward = new MotionController("joysticklinear", 0.1, 0, 2, 10, 2, 0.05, 0, null);
+		angular = new MotionController("joystickangular", 0.1, 0, 2, 10, 2, 0.05, 0, null);
 	}
 
 	public void periodicExecution(Robot robot, double delta) {
@@ -56,19 +56,20 @@ public class JoystickMovement {
 
 			if (Dependencies.GYROSCOPE.enabled()) {
 
-				double leftSpeedMod = Math.min(Math.abs(-1 / Global.ARCADE_YAW_SENSITIVITY - xAxis)
-						/ (1 / Global.ARCADE_YAW_SENSITIVITY), 1);
-				double rightSpeedMod = Math.min(Math.abs(1 / Global.ARCADE_YAW_SENSITIVITY - xAxis)
-						/ (1 / Global.ARCADE_YAW_SENSITIVITY), 1);
-
 				forward.setGoal(0);
 				angular.setGoal(0);
+				
 				double linearPower = forward.getPower(yAxis, robot.positioner.localAcceleration.y,
 						robot.positioner.velocity.magnitude(), delta);
 				double angularPower = angular.getPower(xAxis * Global.ARCADE_YAW_SENSITIVITY,
 						robot.positioner.angularAccel.z, robot.positioner.angularSpeed.z, delta);
-				robot.leftDriveMotors.set(leftSpeedMod * yAxis * zAxis);
-				robot.rightDriveMotors.set(rightSpeedMod * yAxis * zAxis);
+				
+				double leftSpeedMod = Math.min(Math.abs(-1 - angularPower), 1) * linearPower * zAxis;
+				double rightSpeedMod = Math.min(Math.abs(1 - angularPower), 1) * linearPower * zAxis;
+				
+				Vector2d power = new Vector2d(leftSpeedMod, rightSpeedMod).scaled(1);
+				robot.leftDriveMotors.set(power.x);
+				robot.rightDriveMotors.set(power.y);
 
 			} else {
 
@@ -90,10 +91,6 @@ public class JoystickMovement {
 			robot.leftDriveMotors.set(yAxis1 * zAxis);
 			robot.rightDriveMotors.set(yAxis2 * zAxis);
 		}
-	}
-
-	private void scale(double a, double b) {
-
 	}
 
 }
