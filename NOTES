@@ -1,8 +1,18 @@
-=======================
-Programming To Do List:
-=======================
+==============
+Testing To-do:
+==============
 
+(somewhat in order of importance)
+- Test motion controller
+- Test raw joystick motion
 
+- Tune joystick motion controller
+- Tune lift motion controller
+
+- Test positioner
+- Test data tables
+
+- Work on vision
 
 ======
 Notes:
@@ -14,4 +24,48 @@ Notes:
 	- Quick spin 180°
 	- 
 
+
+==================
+Current Functions:
+==================
+
+- Robot positioning calculator
+	- Dependent on gyroscope
+
+- Motion controller
+	- PI (PID) control, I range
+		- D control incomplete due to necessary fancy code for it to work
+	- Trapezoidal motion profiling
+		- Velocity limiting, acceleration/deceleration limiting
+		- Data tables of acceleration/power for tuning
+			- Data recording for tables, can be saved
+		
+- Sensor data recording for debugging, saved to file
+
+- Log recording, saved to file
+
+- Sensor dependencies system
+	- Keeps track if different sensors are unavailable
+	
+- Autonomous moving function
+	- Uses motion controller for linear and angular error independently
+	- Dependent on gyroscope
+	
+- Joystick control
+	- Arcade mode using motion controller
+		- Dependent on gyroscope
+	- Arcade mode raw
+		- No motion controlling, direct joystick to motor controlling
+			- Has angular sensitivity value
+	- Tank mode raw
+		- No motion controlling, completely direct joystick to motors
+	- Mecanum control (INCOMPLETE)
+
+- 2015 Vision code
+	- Outputs camera vision to driver station
+	- Detects retroreflective tape, calculates position of respective yellow totes (INCOMPLETE)
+		- Displays found tape rectangles on driver station
+	- Detects green bins (INCOMPLETE)
+
+- Wrappers for SmartDashboard inputs/outputs
 

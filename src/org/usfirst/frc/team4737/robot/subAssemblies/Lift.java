@@ -7,6 +7,7 @@ import org.usfirst.frc.team4737.robot.control.MotionController;
 import org.usfirst.frc.team4737.robot.math.Vector2d;
 import org.usfirst.frc.team4737.robot.wrappers.Motor;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Lift {
@@ -15,6 +16,9 @@ public class Lift {
 	private Motor rightMotor;
 	private Encoder leftEncoder;
 	private Encoder rightEncoder;
+	
+	private DigitalInput topBumper;
+	private DigitalInput bottomBumper;
 
 	private MotionController leftControl;
 	private MotionController rightControl;
@@ -36,7 +40,12 @@ public class Lift {
 				+ Global.LIFT_ENCODER_RIGHTB + " B");
 		rightEncoder = new Encoder(Global.LIFT_ENCODER_RIGHTA, Global.LIFT_ENCODER_RIGHTB);
 		rightEncoder.setDistancePerPulse(Global.LIFT_ENCODER_DPP);
-
+		
+		Log.println("\tRunning top bumper switch on digital " + Global.LIFT_BUMPER_TOP);
+		topBumper = new DigitalInput(Global.LIFT_BUMPER_TOP);
+		Log.println("\tRunning bottom bumper switch on digital " + Global.LIFT_BUMPER_BOTTOM);
+		bottomBumper = new DigitalInput(Global.LIFT_BUMPER_BOTTOM);
+		
 		leftControl = new MotionController("liftLcontrol", Global.LIFT_kP, Global.LIFT_kI, 0, Global.LIFT_MAX_ACCEL,
 				Global.LIFT_MAX_VEL, Global.LIFT_MAX_DECEL, Global.LIFT_IRANGE, null);
 		rightControl = new MotionController("liftRcontrol", Global.LIFT_kP, Global.LIFT_kI, 0, Global.LIFT_MAX_ACCEL,

@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.Joystick.AxisType;
 public class JoystickMovement {
 
 	public enum Drive {
-		TANK, ARCADE
+		TANK, ARCADE, MECANUM
 	}
 
 	private Drive mode;
@@ -47,12 +47,19 @@ public class JoystickMovement {
 		forward = new MotionController("joysticklinear", 0.1, 0, 2, 10, 2, 0.05, 0, null);
 		angular = new MotionController("joystickangular", 0.1, 0, 2, 10, 2, 0.05, 0, null);
 	}
+	
+	private double deadband(double value, double range) {
+		double val = value;
+		if (value < 0 && value > -range) val = 0;
+		if (value > 0 && value < range) val = 0;
+		return val;
+	}
 
 	public void periodicExecution(Robot robot, double delta) {
 		if (mode == Drive.ARCADE) {
-			double xAxis = joystick1.getAxis(AxisType.kX); // Rotational axis
-			double yAxis = joystick1.getAxis(AxisType.kY); // Magnitude axis
-			double zAxis = joystick1.getAxis(AxisType.kZ); // Scale axis
+			double xAxis = deadband(joystick1.getAxis(AxisType.kX), Global.JOYSTICK_DEADBAND); // Rotational axis
+			double yAxis = deadband(joystick1.getAxis(AxisType.kY), Global.JOYSTICK_DEADBAND); // Magnitude axis
+			double zAxis = deadband(joystick1.getAxis(AxisType.kZ), Global.JOYSTICK_DEADBAND); // Scale axis
 
 			if (Dependencies.GYROSCOPE.enabled()) {
 
@@ -90,6 +97,8 @@ public class JoystickMovement {
 
 			robot.leftDriveMotors.set(yAxis1 * zAxis);
 			robot.rightDriveMotors.set(yAxis2 * zAxis);
+		} else if (mode == Drive.MECANUM) {
+			// TODO
 		}
 	}
 

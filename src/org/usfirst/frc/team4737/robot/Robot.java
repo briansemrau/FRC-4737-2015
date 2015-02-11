@@ -90,13 +90,13 @@ public class Robot extends IterativeRobot {
 		camera = new AxisCamera(Global.CAMERA_IP);
 		vision = new Vision();
 
-		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_FL);
+		Log.println("\tRunning front left drive motor on CAN ID " + Global.DRIVEMOTOR_FL);
 		driveMotorFrontLeft = new Motor(Global.DRIVEMOTOR_FL, false);
-		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_RL);
+		Log.println("\tRunning rear left drive motor on CAN ID " + Global.DRIVEMOTOR_RL);
 		driveMotorRearLeft = new Motor(Global.DRIVEMOTOR_RL, false);
-		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_FR);
+		Log.println("\tRunning front right drive motor on CAN ID " + Global.DRIVEMOTOR_FR);
 		driveMotorFrontRight = new Motor(Global.DRIVEMOTOR_FR, false);
-		Log.println("\tRunning Front Left drive motor on CAN ID " + Global.DRIVEMOTOR_RR);
+		Log.println("\tRunning rear right drive motor on CAN ID " + Global.DRIVEMOTOR_RR);
 		driveMotorRearRight = new Motor(Global.DRIVEMOTOR_RR, false);
 
 		leftDriveMotors = new MotorGroup(driveMotorFrontLeft, driveMotorRearLeft);

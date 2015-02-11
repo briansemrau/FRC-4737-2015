@@ -31,6 +31,8 @@ public class Global {
 	
 	// Control tuning
 
+	public static final double JOYSTICK_DEADBAND = 0.03;
+	
 	public static final double ARCADE_YAW_SENSITIVITY = 1; // TODO tune
 
 	public static final double AUTOMOVE_YAW_SENTITIVITY = 1.0; // TODO tune
@@ -55,19 +57,23 @@ public class Global {
 	public static final int JOYSTICK_1_USB = 0;
 	public static final int JOYSTICK_2_USB = 1;
 
-	public static final int DRIVEMOTOR_FL = -1;
+	public static final int DRIVEMOTOR_FL = -1; // 25, 24, 23, 22
 	public static final int DRIVEMOTOR_FR = -1;
 	public static final int DRIVEMOTOR_RL = -1;
 	public static final int DRIVEMOTOR_RR = -1;
 
 	public static final int GYROSCOPE = 0;
 	
-	public static final int LIFT_MOTOR_LEFT = -1;
+	public static final int LIFT_MOTOR_LEFT = -1; // 21, 20
 	public static final int LIFT_MOTOR_RIGHT = -1;
+	
 	public static final int LIFT_ENCODER_LEFTA = -1;
 	public static final int LIFT_ENCODER_LEFTB = -1;
 	public static final int LIFT_ENCODER_RIGHTA = -1;
 	public static final int LIFT_ENCODER_RIGHTB = -1;
 	public static final int LIFT_ENCODER_DPP = -1;
+	
+	public static final int LIFT_BUMPER_TOP = -1;
+	public static final int LIFT_BUMPER_BOTTOM = -1;
 
 }
