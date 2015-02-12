@@ -3,6 +3,8 @@ Testing To-do:
 ==============
 
 (somewhat in order of importance)
+- set pins/CAN ids in Global.java
+
 - Test motion controller
 - Test raw joystick motion
 

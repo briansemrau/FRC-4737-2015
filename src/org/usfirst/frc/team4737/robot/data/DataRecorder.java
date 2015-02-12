@@ -63,7 +63,7 @@ public class DataRecorder {
 	public static void saveDataLog() {
 		Log.println("Saving session data...");
 
-		String outputFile = "/home/lvuser/DATALOGS/datalog" + date + ".txt";
+		String outputFile = "/home/lvuser/datalog" + date + ".txt";
 
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputFile)));
@@ -75,7 +75,7 @@ public class DataRecorder {
 				writer.write(output + "\n");
 			}
 			writer.close();
-			Log.println("Finished!");
+			Log.println("Finished saving datalog.");
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.println("Failed to write data log.");

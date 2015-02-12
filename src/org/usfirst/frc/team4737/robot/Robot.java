@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
 	public MotorGroup leftDriveMotors;
 	public MotorGroup rightDriveMotors;
 
-	public Lift lift;
+//	public Lift lift;
 
 	// Values
 
@@ -77,7 +77,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void robotInit() {
 		Log.println("Robot Code Version " + Global.VERSION);
-		Log.println("");
 		Log.println("Initializing Robot...");
 
 		Log.println("Initializing controllers...");
@@ -154,6 +153,10 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		commonPeriodic();
 		test.periodicUpdate(this);
+	}
+	
+	public void disabledPeriodic() {
+		commonPeriodic();
 	}
 
 	public void commonPeriodic() {

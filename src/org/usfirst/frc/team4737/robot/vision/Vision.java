@@ -38,7 +38,7 @@ public class Vision {
 	Joystick debug;
 
 	public Vision() {
-		Log.print("Initializing vision...");
+		Log.println("Initializing vision...");
 		try {
 			image = new RGBImage();
 		} catch (NIVisionException e) {

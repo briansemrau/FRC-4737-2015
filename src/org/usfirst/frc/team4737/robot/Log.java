@@ -29,7 +29,7 @@ public class Log {
 	private static double startTime = System.nanoTime() / 1000000000.0;
 	private static String date;
 	static {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		date = format.format(new Date());
 	}
 	private static ArrayList<String> log = new ArrayList<String>();
@@ -40,26 +40,26 @@ public class Log {
 	}
 
 	public static void println(Object o) {
-		System.out.println("[" + (System.nanoTime() / 1000000000.0 - startTime) + "s]" + o);
-		log.add("[" + (System.nanoTime() / 1000000000.0 - startTime) + "s]" + o.toString());
+		String text = "[" + (int) ((System.nanoTime() / 1000000000.0 - startTime) * 1000) / 1000.0 + "s] " + o;
+		System.out.println(text);
+		log.add(text);
 	}
 
 	public static void saveLog() {
-		System.out.println("Saving session log...");
+		Log.println("Saving session log...");
 
-		String outputFile = "/home/lvuser/LOGS/log" + date + ".txt";
+		String outputFile = "/home/lvuser/log" + date + ".txt";
 
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-					outputFile)));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputFile)));
 			for (String line : log) {
 				writer.write(line + "\n");
 			}
 			writer.close();
-			System.out.println("Finished saving log.");
+			Log.println("Finished saving log.");
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("Failed to write log.");
+			Log.println("Failed to write log.");
 		}
 
 	}

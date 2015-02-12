@@ -49,7 +49,7 @@ public class MotionController {
 		} else {
 			accelTuning = new DataTable(.01, -1, 1, 0);
 			mapping = true;
-			Log.println("A data table had to be created! This table will be measured and saved when told to.");
+			Log.println("A data table had to be created! This table will be filled and saved when told to.");
 			Log.println("\tData table save file: " + "" + ", press joystick 2:" + Global.DATATABLE_SAVE_BUTTON + " to save");
 		}
 
