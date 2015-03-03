@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4737.robot.control;
 
+import java.util.ArrayList;
+
 import org.usfirst.frc.team4737.robot.Global;
 import org.usfirst.frc.team4737.robot.Log;
 
@@ -13,6 +15,8 @@ import org.usfirst.frc.team4737.robot.Log;
  *
  */
 public class MotionController {
+
+	private static ArrayList<DataTable> saveable = new ArrayList<DataTable>();
 
 	// Control values
 	public double kP, kI;// , kD;
@@ -34,8 +38,8 @@ public class MotionController {
 	// private Vector2d[] velocityRecord;
 	// private boolean validDiff = false;
 
-	public MotionController(String id, double kP, double kI, /* double kD, */double accelLimit, double velLimit, double decelLimit,
-			double expectedDeltaT, double integralRange, /* int differentialRecordingLength, */
+	public MotionController(String id, double kP, double kI, /* double kD, */double accelLimit, double velLimit,
+			double decelLimit, double expectedDeltaT, double integralRange, /* int differentialRecordingLength, */
 			String accelTuningFile) {
 		this.kP = kP;
 		this.kI = kI;
@@ -50,7 +54,9 @@ public class MotionController {
 			accelTuning = new DataTable(.01, -1, 1, 0);
 			mapping = true;
 			Log.println("A data table had to be created! This table will be filled and saved when told to.");
-			Log.println("\tData table save file: " + "" + ", press joystick 2:" + Global.DATATABLE_SAVE_BUTTON + " to save");
+			Log.println("\tData table save file: " + (id + ".txt") + ", press joystick 2:"
+					+ Global.DATATABLE_SAVE_BUTTON + " to save");
+			saveable.add(accelTuning);
 		}
 
 		this.integralRange = integralRange;
@@ -116,17 +122,28 @@ public class MotionController {
 		// TMP power limiting
 
 		if (velocity > velLimit) {
-			limitedPower = accelTuning.findClosestX((velLimit - velocity));
+			double val = accelTuning.findClosestX((velLimit - velocity));
+			if (val != Double.NaN)
+				limitedPower = val;
+		}
+		if (velocity < -velLimit) {
+			double val = accelTuning.findClosestX((velLimit - velocity));
+			if (val != Double.NaN)
+				limitedPower = -val;
 		}
 
 		if (acceleration > 0) {
-			if (acceleration > accelLimit || accelTuning.getY(pidPower) > accelLimit) {
-				limitedPower = 0;
-			}
+			double val = accelTuning.getY(pidPower);
+			if (val != Double.NaN)
+				if (acceleration > accelLimit || val > accelLimit) {
+					limitedPower = 0;
+				}
 		} else if (acceleration < 0) {
-			if (-acceleration > decelLimit || -accelTuning.getY(pidPower) > decelLimit) {
-				limitedPower = accelTuning.findClosestX(decelLimit - acceleration);
-			}
+			double val = accelTuning.getY(pidPower);
+			if (val != Double.NaN)
+				if (-acceleration > decelLimit || -val > decelLimit) {
+					limitedPower = accelTuning.findClosestX(decelLimit - acceleration);
+				}
 		}
 
 		return limitedPower;

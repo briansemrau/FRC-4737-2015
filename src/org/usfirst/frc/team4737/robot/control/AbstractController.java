@@ -22,5 +22,7 @@ public abstract class AbstractController {
 	 */
 	public void periodicUpdate(Robot robot) {
 	}
+	
+	public abstract void reset();
 
 }

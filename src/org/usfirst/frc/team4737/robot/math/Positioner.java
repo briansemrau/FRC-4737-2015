@@ -1,8 +1,9 @@
 package org.usfirst.frc.team4737.robot.math;
 
 import org.usfirst.frc.team4737.robot.Global;
+import org.usfirst.frc.team4737.robot.Log;
 import org.usfirst.frc.team4737.robot.Robot;
-import org.usfirst.frc.team4737.robot.control.Dependencies;
+import org.usfirst.frc.team4737.robot.wrappers.Dashboard;
 
 /**
  * Handles all the measured and calculated positioning of the robot.
@@ -11,7 +12,7 @@ import org.usfirst.frc.team4737.robot.control.Dependencies;
  *
  */
 public class Positioner {
-
+	
 	/**
 	 * The calculated local-axis acceleration of the robot.
 	 */
@@ -62,6 +63,12 @@ public class Positioner {
 	 */
 	public Vector3d avgPosition;
 
+	private Vector3d localAccelCalibration;
+	private Vector3d gyroCalibration;
+	private int measurements;
+	private double calibrationTimeLeft;
+	private double calibrationTime = 6;
+
 	public Positioner(Robot robot) {
 		localAcceleration = new Vector3d();
 		globalAcceleration = new Vector3d();
@@ -83,6 +90,9 @@ public class Positioner {
 		position = new Vector3d();
 		prevPosition = new Vector3d();
 		avgPosition = new Vector3d();
+
+		localAccelCalibration = new Vector3d();
+		gyroCalibration = new Vector3d();
 	}
 
 	/**
@@ -94,8 +104,21 @@ public class Positioner {
 	 *            - The time since last update
 	 */
 	public void update(Robot robot, double deltaTime) {
-		if (!Dependencies.GYROSCOPE.enabled())
-			return;
+		if (calibrationTimeLeft > 0) {
+			calibrationTimeLeft -= deltaTime;
+			localAccelCalibration.x += robot.accelerometer.getX() / Global.GRAVITY / deltaTime;
+			localAccelCalibration.y += robot.accelerometer.getY() / Global.GRAVITY / deltaTime;
+			localAccelCalibration.z += robot.accelerometer.getZ() / Global.GRAVITY / deltaTime; 
+			gyroCalibration.z += robot.gyroscope.getAngle();
+			measurements++;
+			if (calibrationTimeLeft <= 0) {
+				Log.println("Finished positioner calibration.");
+				localAccelCalibration = localAccelCalibration.scaled(1.0 / measurements);
+				gyroCalibration = gyroCalibration.scaled(1.0 / measurements);
+				
+			} else
+				return;
+		}
 
 		// Re-record previous values
 		prevGlobalAcceleration = globalAcceleration.clone();
@@ -108,9 +131,12 @@ public class Positioner {
 		localAcceleration.x = robot.accelerometer.getX() / Global.GRAVITY;
 		localAcceleration.y = robot.accelerometer.getY() / Global.GRAVITY;
 		localAcceleration.z = robot.accelerometer.getZ() / Global.GRAVITY;
+		localAcceleration.subtract(localAccelCalibration);
+		localAcceleration.deadband(0.01);
 
 		// Measure angle using gyroscope
 		gyroAngle.z = robot.gyroscope.getAngle();
+		gyroAngle.subtract(gyroCalibration);
 
 		// Calculate angular values
 		avgGyroAngle = gyroAngle.average(prevGyroAngle);
@@ -128,6 +154,21 @@ public class Positioner {
 		avgVelocity = velocity.average(prevVelocity);
 		position.add(avgVelocity.integral(deltaTime));
 		avgPosition = position.average(prevPosition);
+		
+		double n = 100000.0;
+		Dashboard.putString(Dashboard.DB_STRING_0, "PX" + (int) (n * position.x) / n);
+		Dashboard.putString(Dashboard.DB_STRING_1, "PY" + (int) (n * position.y) / n);
+		Dashboard.putString(Dashboard.DB_STRING_5, "VX" + (int) (n * velocity.x) / n);
+		Dashboard.putString(Dashboard.DB_STRING_6, "VY" + (int) (n * velocity.y) / n);
+		Dashboard.putString(Dashboard.DB_STRING_7, "AX" + (int) (n * localAcceleration.x) / n);
+		Dashboard.putString(Dashboard.DB_STRING_8, "AY" + (int) (n * localAcceleration.y) / n);
+	}
+
+	public void startCalibration() {
+		Log.println("Starting positioner calibration! Calibrating accelerometer and gyroscope.");
+		localAccelCalibration = new Vector3d();
+		gyroCalibration = new Vector3d();
+		calibrationTimeLeft = calibrationTime;
 	}
 
 }

@@ -132,7 +132,16 @@ public class Vector3d {
 	public Vector3d integral(double deltaTime) {
 		return scaled(deltaTime);
 	}
-	
+
+	public void deadband(double deadband) {
+		if (Math.abs(x) < deadband)
+			x = 0;
+		if (Math.abs(y) < deadband)
+			y = 0;
+		if (Math.abs(z) < deadband)
+			z = 0;
+	}
+
 	public double magnitude() {
 		return Math.sqrt(Math.sqrt(x * x + y * y) + z * z);
 	}

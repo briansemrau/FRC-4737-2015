@@ -37,4 +37,10 @@ public class TestController extends AbstractController {
 		}
 	}
 
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

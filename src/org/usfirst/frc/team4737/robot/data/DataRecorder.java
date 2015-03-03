@@ -61,14 +61,15 @@ public class DataRecorder {
 	 * <code>/home/lvuser/DATALOGS/datalog<#>.txt</code>).
 	 */
 	public static void saveDataLog() {
-		Log.println("Saving session data...");
 
-		String outputFile = "/home/lvuser/datalog" + date + ".txt";
+		String outputFile = "/home/lvuser/DATALOGS/datalog" + date + ".txt";
+		Log.println("Saving session data (file: " + outputFile + ")...");
 
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outputFile)));
 			for (Dataset set : datasets) {
 				String output = set.varname;
+				Log.println("\tSaving variable \"" + set.varname + "\"");
 				for (Object o : set.data) {
 					output += "," + o.toString();
 				}
@@ -92,22 +93,14 @@ public class DataRecorder {
 	 * @return Returns the found data set, or a newly created data set.
 	 */
 	private static Dataset findDataset(String varname) {
-		Dataset returnSet = null;
-		boolean found = false;
 		for (Dataset set : datasets) {
 			if (set.varname.equals(varname)) {
-				returnSet = set;
-				found = true;
-				break;
+				return set;
 			}
 		}
-		if (found)
-			return returnSet;
-		else {
-			returnSet = new Dataset(varname);
-			datasets.add(returnSet);
-			return returnSet;
-		}
+		Dataset newSet = new Dataset(varname);
+		datasets.add(newSet);
+		return newSet;
 	}
 
 	public static void clear() {
